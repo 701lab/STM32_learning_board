@@ -1,32 +1,56 @@
-# Prerequisites
-*.d
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Ignore list for Eagle, a PCB layout tool
 
-# Precompiled Headers
-*.gch
-*.pch
+# Backup files
+*.s#?
+*.b#?
+*.l#?
+*.b$?
+*.s$?
+*.l$?
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Eagle project file
+# It contains a serial number and references to the file structure
+# on your computer.
+# comment the following line if you want to have your project file included.
+eagle.epf
 
-# Fortran module files
-*.mod
-*.smod
+# Autorouter files
+*.pro
+*.job
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# CAM files
+*.$$$
+*.cmp
+*.ly2
+*.l15
+*.sol
+*.plc
+*.stc
+*.sts
+*.crc
+*.crs
 
-# Executables
-*.exe
-*.out
-*.app
+*.dri
+*.drl
+*.gpi
+*.pls
+*.ger
+*.xln
+
+*.drd
+*.drd.*
+
+*.s#*
+*.b#*
+
+*.info
+
+*.eps
+
+# file locks introduced since 7.x
+*.lck
+
+# CAM outputs ignore
+
+CAMOutputs/
