@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="9.84251969" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
+<grid distance="0.25" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
@@ -186,7 +186,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="no" active="yes"/>
 </layers>
 <board>
-<fusionsync huburn="a.YnVzaW5lc3M6Z21haWwxNzIwNjY" projecturn="a.YnVzaW5lc3M6Z21haWwxNzIwNjYjMjAxOTA1MDIxOTE2NjU2MjY" f3durn="urn:adsk.wipprod:dm.lineage:RorIPh9tSvmERUTah4m4jg" pcbguid="d2b34a22-53cc-4969-a784-dfd6bce0d069" lastpulledtime="" lastsyncedchangeguid="fa0bde8c-1b23-0fc0-dd45-8b70acfa4da9"/>
+<fusionsync huburn="a.YnVzaW5lc3M6Z21haWwxNzIwNjY" projecturn="a.YnVzaW5lc3M6Z21haWwxNzIwNjYjMjAxOTA1MDIxOTE2NjU2MjY" f3durn="urn:adsk.wipprod:dm.lineage:RorIPh9tSvmERUTah4m4jg" pcbguid="d2b34a22-53cc-4969-a784-dfd6bce0d069" lastpulledtime="" lastsyncedchangeguid="a4bd004e-f5ca-5d82-65b8-885cd2b9009d"/>
 <plain>
 <wire x1="3" y1="0" x2="97" y2="0" width="0.0508" layer="20"/>
 <wire x1="97" y1="0" x2="100" y2="3" width="0.0508" layer="20" curve="90"/>
@@ -2678,7 +2678,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="55.48" y="39.25" size="1.27" layer="27" rot="R270" align="center"/>
 </element>
 <element name="C19" library="Capacitors" library_urn="urn:adsk.eagle:library:13360199" package="C0402" package3d_urn="urn:adsk.eagle:package:13360227/4" value="100nF" x="96.5" y="49.5" smashed="yes">
-<attribute name="NAME" x="96.5" y="51.02" size="1.27" layer="25" align="center"/>
+<attribute name="NAME" x="96.5" y="50.77" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="96.5" y="49.5" size="0.4064" layer="48" align="center"/>
 <attribute name="VALUE" x="96.5" y="48.23" size="1.27" layer="27" align="center"/>
 </element>
@@ -2776,8 +2776,8 @@ design rules under a new name.</description>
 <attribute name="BUILT_BY" value="EMA_Cory" x="64.16" y="84.12" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" x="64.16" y="84.12" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="EEE-1VA100WAR" x="64.16" y="84.12" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="NAME" x="22.25" y="44.75" size="1.27" layer="48" ratio="10" rot="R180" align="center"/>
 <attribute name="NAME" x="25.69" y="44.75" size="0.7112" layer="25" font="vector" align="center"/>
+<attribute name="NAME" x="22.25" y="44.75" size="1.27" layer="48" ratio="10" rot="R180" align="center"/>
 <attribute name="VALUE" x="26.06" y="44.75" size="1.27" layer="27" ratio="6" rot="SR90" align="center"/>
 <attribute name="VENDOR" value="Panasonic" x="64.16" y="84.12" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
@@ -2790,8 +2790,8 @@ design rules under a new name.</description>
 <attribute name="BUILT_BY" value="EMA_Cory" x="-19.66" y="-26.99" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" x="-19.66" y="-26.99" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="EEE-1VA100WAR" x="-19.66" y="-26.99" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="22.25" y="20" size="1.27" layer="48" ratio="10" align="center"/>
 <attribute name="NAME" x="25.81" y="20" size="0.7112" layer="25" font="vector" align="center"/>
+<attribute name="NAME" x="22.25" y="20" size="1.27" layer="48" ratio="10" align="center"/>
 <attribute name="VALUE" x="18.44" y="20" size="1.27" layer="27" ratio="6" rot="SR270" align="center"/>
 <attribute name="VENDOR" value="Panasonic" x="-19.66" y="-26.99" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
@@ -2879,7 +2879,7 @@ design rules under a new name.</description>
 <attribute name="MF" value="Littelfuse Inc." x="-44.6" y="-73.03" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MP" value="SP0503BAHTG" x="-44.6" y="-73.03" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="25.25" y="8.25" size="0.8128" layer="48" align="center"/>
-<attribute name="NAME" x="25.25" y="6.04" size="0.7112" layer="25" align="center"/>
+<attribute name="NAME" x="25.25" y="6.04" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="PACKAGE" value="SOT-143 Littelfuse" x="-44.6" y="-73.03" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="22.71" y="8.25" size="0.6501125" layer="27" rot="R270" align="center"/>
 </element>
@@ -2936,39 +2936,39 @@ design rules under a new name.</description>
 <element name="L1" library="Inductors" library_urn="urn:adsk.eagle:library:13309331" package="0402" package3d_urn="urn:adsk.eagle:package:17200698/2" value="BLM15PD" x="55.5" y="53.25" smashed="yes" rot="R180">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="-24.51" y="138.34" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="BLM15PD121SN1D" x="-24.51" y="138.34" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="53.5" y="53.23" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="55.5" y="53.25" size="0.4064" layer="48" ratio="10" rot="R180" align="center"/>
+<attribute name="NAME" x="53.5" y="53.23" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VENDOR" value="Murata" x="-24.51" y="138.34" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="Q1" library="Transistors" library_urn="urn:adsk.eagle:library:17314025" package="SON5X6" package3d_urn="urn:adsk.eagle:package:17314028/4" value="" x="13.5" y="41.5" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="52.87" y="-18.19" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="CSD18534Q5A" x="52.87" y="-18.19" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="9.25" y="41.81" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="13.5" y="41.5" size="1.27" layer="48" ratio="6" align="center"/>
+<attribute name="NAME" x="9.25" y="41.81" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VALUE" x="13.5" y="37.69" size="1.27" layer="21" ratio="6" rot="SR0" align="center"/>
 <attribute name="VENDOR" value="Texas Instruments" x="52.87" y="-18.19" size="1.778" layer="27" display="off"/>
 </element>
 <element name="Q2" library="Transistors" library_urn="urn:adsk.eagle:library:17314025" package="SON5X6" package3d_urn="urn:adsk.eagle:package:17314028/4" value="" x="13.5" y="35.5" smashed="yes" rot="R180">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="-33.49" y="95.19" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="CSD18534Q5A" x="-33.49" y="95.19" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="9.25" y="35.44" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="13.5" y="35.5" size="1.27" layer="48" ratio="6" rot="R180" align="center"/>
+<attribute name="NAME" x="9.25" y="35.44" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VALUE" x="13.5" y="39.31" size="1.27" layer="21" ratio="6" rot="SR180" align="center"/>
 <attribute name="VENDOR" value="Texas Instruments" x="-33.49" y="95.19" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="Q3" library="Transistors" library_urn="urn:adsk.eagle:library:17314025" package="SON5X6" package3d_urn="urn:adsk.eagle:package:17314028/4" value="" x="13.5" y="29.5" smashed="yes" rot="R180">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="-41.11" y="89.19" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="CSD18534Q5A" x="-41.11" y="89.19" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="9.25" y="29.44" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="13.5" y="29.5" size="1.27" layer="48" ratio="6" rot="R180" align="center"/>
+<attribute name="NAME" x="9.25" y="29.44" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VALUE" x="13.5" y="33.31" size="1.27" layer="21" ratio="6" rot="SR180" align="center"/>
 <attribute name="VENDOR" value="Texas Instruments" x="-41.11" y="89.19" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="Q4" library="Transistors" library_urn="urn:adsk.eagle:library:17314025" package="SON5X6" package3d_urn="urn:adsk.eagle:package:17314028/4" value="" x="13.5" y="23.5" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="75.73" y="-36.19" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="CSD18534Q5A" x="75.73" y="-36.19" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="9.25" y="23.56" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="13.5" y="23.5" size="1.27" layer="48" ratio="6" align="center"/>
+<attribute name="NAME" x="9.25" y="23.56" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VALUE" x="13.5" y="19.69" size="1.27" layer="21" ratio="6" rot="SR0" align="center"/>
 <attribute name="VENDOR" value="Texas Instruments" x="75.73" y="-36.19" size="1.778" layer="27" display="off"/>
 </element>
@@ -3045,7 +3045,7 @@ design rules under a new name.</description>
 </element>
 <element name="R23" library="Fuses" library_urn="urn:adsk.eagle:library:16817448" package="0805_PTC_FUSE" package3d_urn="urn:adsk.eagle:package:16817451/2" value="100mOhm" x="22.25" y="8.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="22.25" y="8.25" size="0.6096" layer="48" rot="R270" align="center"/>
-<attribute name="NAME" x="22.25" y="6.155" size="0.7112" layer="25" align="center"/>
+<attribute name="NAME" x="22.25" y="6.155" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VALUE" x="20.345" y="8.25" size="1.27" layer="27" rot="R270" align="center"/>
 </element>
 <element name="R24" library="Resistors" library_urn="urn:adsk.eagle:library:13360588" package="R0402" package3d_urn="urn:adsk.eagle:package:15234387/2" value="11k" x="32.5" y="28.25" smashed="yes" rot="R270">
@@ -3093,22 +3093,22 @@ design rules under a new name.</description>
 </element>
 <element name="R6" library="Resistors" library_urn="urn:adsk.eagle:library:13360588" package="R0402" package3d_urn="urn:adsk.eagle:package:15234387/2" value="10k" x="93.25" y="48" smashed="yes" rot="R270">
 <attribute name="NAME" x="93.25" y="48" size="0.4064" layer="48" rot="R270" align="center"/>
-<attribute name="NAME" x="91.5" y="48.02" size="1.27" layer="25" align="center"/>
+<attribute name="NAME" x="92" y="48.02" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VALUE" x="91.98" y="48" size="1.27" layer="27" rot="R270" align="center"/>
 </element>
 <element name="R7" library="Resistors" library_urn="urn:adsk.eagle:library:13360588" package="ALPS_PTM" package3d_urn="urn:adsk.eagle:package:17016698/3" value="10K" x="92.75" y="56.75" smashed="yes" rot="R90">
 <attribute name="NAME" x="86.4" y="56.75" size="1.778" layer="48" rot="R180" align="center"/>
-<attribute name="NAME" x="95.28" y="56.75" size="2" layer="25" font="vector" ratio="10" rot="SR90" align="center"/>
+<attribute name="NAME" x="95.28" y="56.75" size="2" layer="25" ratio="10" rot="SR90" align="center"/>
 <attribute name="VALUE" x="94.655" y="56.75" size="1.27" layer="27" rot="R90" align="center"/>
 </element>
 <element name="R8" library="Resistors" library_urn="urn:adsk.eagle:library:13360588" package="ALPS_PTM" package3d_urn="urn:adsk.eagle:package:17016698/3" value="10K" x="92.75" y="70" smashed="yes" rot="R90">
 <attribute name="NAME" x="86.4" y="70" size="1.778" layer="48" rot="R180" align="center"/>
-<attribute name="NAME" x="95.03" y="70" size="2" layer="25" font="vector" ratio="10" rot="SR90" align="center"/>
+<attribute name="NAME" x="95.03" y="70" size="2" layer="25" ratio="10" rot="SR90" align="center"/>
 <attribute name="VALUE" x="94.655" y="70" size="1.27" layer="27" rot="R90" align="center"/>
 </element>
 <element name="R9" library="Resistors" library_urn="urn:adsk.eagle:library:13360588" package="ALPS_PTM" package3d_urn="urn:adsk.eagle:package:17016698/3" value="10K" x="92.75" y="83.25" smashed="yes" rot="R90">
 <attribute name="NAME" x="86.4" y="83.25" size="1.778" layer="48" rot="R180" align="center"/>
-<attribute name="NAME" x="95.03" y="83.25" size="2" layer="25" font="vector" ratio="10" rot="SR90" align="center"/>
+<attribute name="NAME" x="95.03" y="83.25" size="2" layer="25" ratio="10" rot="SR90" align="center"/>
 <attribute name="VALUE" x="94.655" y="83.25" size="1.27" layer="27" rot="R90" align="center"/>
 </element>
 <element name="RM1" library="Resistors" library_urn="urn:adsk.eagle:library:13360588" package="0603-ARC" package3d_urn="urn:adsk.eagle:package:14667556/2" value="RES_ARRAY" x="64" y="34.25" smashed="yes" rot="R180">
@@ -3126,24 +3126,24 @@ design rules under a new name.</description>
 <attribute name="BUILT_BY" value="EMA_Cory" x="145.17" y="-1.64" size="1.778" layer="27" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" x="145.17" y="-1.64" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="B3F-4055" x="145.17" y="-1.64" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="94.75" y="7" size="2" layer="25" ratio="10" rot="SR90" align="center"/>
 <attribute name="NAME" x="86.75" y="7.25" size="1.778" layer="48" ratio="10" align="center"/>
-<attribute name="NAME" x="94.75" y="7" size="2" layer="25" font="vector" ratio="10" rot="SR90" align="center"/>
 <attribute name="VENDOR" value="Omron" x="145.17" y="-1.64" size="1.778" layer="27" display="off"/>
 </element>
 <element name="S3" library="buttons and switches" library_urn="urn:adsk.eagle:library:14616530" package="SWITCH_B3F-4055" package3d_urn="urn:adsk.eagle:package:17006412/3" value="B3F-4055" x="86.75" y="21" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_Cory" x="160.41" y="12.11" size="1.778" layer="27" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" x="160.41" y="12.11" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="B3F-4055" x="160.41" y="12.11" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="94.75" y="21" size="2" layer="25" ratio="10" rot="SR90" align="center"/>
 <attribute name="NAME" x="86.75" y="21" size="1.778" layer="48" ratio="10" align="center"/>
-<attribute name="NAME" x="94.75" y="21" size="2" layer="25" font="vector" ratio="10" rot="SR90" align="center"/>
 <attribute name="VENDOR" value="Omron" x="160.41" y="12.11" size="1.778" layer="27" display="off"/>
 </element>
 <element name="S4" library="buttons and switches" library_urn="urn:adsk.eagle:library:14616530" package="SWITCH_B3F-4055" package3d_urn="urn:adsk.eagle:package:17006412/3" value="B3F-4055" x="86.75" y="34.75" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_Cory" x="175.65" y="25.86" size="1.778" layer="27" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" x="175.65" y="25.86" size="1.778" layer="27" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="B3F-4055" x="175.65" y="25.86" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="86.75" y="34.75" size="1.778" layer="48" ratio="10" align="center"/>
 <attribute name="NAME" x="94.75" y="34.5" size="2" layer="25" ratio="10" rot="SR90" align="center"/>
+<attribute name="NAME" x="86.75" y="34.75" size="1.778" layer="48" ratio="10" align="center"/>
 <attribute name="VENDOR" value="Omron" x="175.65" y="25.86" size="1.778" layer="27" display="off"/>
 </element>
 <element name="SB1" library="testing" library_urn="urn:adsk.eagle:library:13096589" package="SOLDER_BRIDGE" package3d_urn="urn:adsk.eagle:package:13096608/4" value="SOLDER_BRIDGE" x="48.25" y="48.25" smashed="yes">
@@ -3207,8 +3207,8 @@ design rules under a new name.</description>
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="-25.87" y="135.35" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" x="-25.87" y="135.35" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="TPS7A1901DRBT" x="-25.87" y="135.35" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="13.5" y="65.5" size="0.8128" layer="48" ratio="6" rot="R180" align="center"/>
 <attribute name="NAME" x="13.5" y="63.21" size="0.7112" layer="25" font="vector" align="center"/>
+<attribute name="NAME" x="13.5" y="65.5" size="0.8128" layer="48" ratio="6" rot="R180" align="center"/>
 <attribute name="VENDOR" value="Texas Instruments" x="-25.87" y="135.35" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="U10" library="Interfaces" library_urn="urn:adsk.eagle:library:16851854" package="SOIC8" package3d_urn="urn:adsk.eagle:package:16851861/2" value="THDV1450" x="34.5" y="72" smashed="yes" rot="R90">
@@ -3231,17 +3231,17 @@ design rules under a new name.</description>
 <attribute name="BUILT_BY" value="EMA_Jessica" x="43.18" y="72.94" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="COPYRIGHT" value="Copyright (C) 2016 Accelerated Designs. All rights reserved" x="43.18" y="72.94" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="STM32G4_LQFP64_T1" x="43.18" y="72.94" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="63.5" y="45" size="2.032" layer="48" ratio="6" rot="R180" align="center"/>
 <attribute name="NAME" x="63.5" y="45.138" size="0.7112" layer="25" font="vector" align="center"/>
+<attribute name="NAME" x="63.5" y="45" size="2.032" layer="48" ratio="6" rot="R180" align="center"/>
 <attribute name="VENDOR" value="STMicroelectronics" x="43.18" y="72.94" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="U4" library="Voltage references" library_urn="urn:adsk.eagle:library:17280573" package="SOT-23-3" package3d_urn="urn:adsk.eagle:package:17280578/3" value="REF3330" x="59.25" y="57" smashed="yes">
-<attribute name="BUILT_BY" value="EMA_UL_Team" x="107.51" y="-12.85" size="1.778" layer="27" display="off"/>
-<attribute name="MANUFACTURER" value="Texas Instruments" x="107.51" y="-12.85" size="1.778" layer="27" display="off"/>
-<attribute name="MANUFACTURER_PART_NUMBER" value="REF3318AIDCKR" x="107.51" y="-12.85" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="59.25" y="57" size="0.8128" layer="48" ratio="6" align="center"/>
-<attribute name="NAME" x="60.21" y="58.25" size="0.7112" layer="25" font="vector" rot="R90" align="center"/>
-<attribute name="VENDOR" value="Texas Instruments" x="107.51" y="-12.85" size="1.778" layer="27" display="off"/>
+<element name="U4" library="Voltage references" library_urn="urn:adsk.eagle:library:17280573" package="SOT-23-3" package3d_urn="urn:adsk.eagle:package:17280578/3" value="REF3330" x="59.25" y="57.25" smashed="yes">
+<attribute name="BUILT_BY" value="EMA_UL_Team" x="107.51" y="-12.6" size="1.778" layer="27" display="off"/>
+<attribute name="MANUFACTURER" value="Texas Instruments" x="107.51" y="-12.6" size="1.778" layer="27" display="off"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="REF3318AIDCKR" x="107.51" y="-12.6" size="1.778" layer="27" display="off"/>
+<attribute name="NAME" x="60.21" y="58.5" size="0.7112" layer="25" font="vector" rot="R90" align="center"/>
+<attribute name="NAME" x="59.25" y="57.25" size="0.8128" layer="48" ratio="6" align="center"/>
+<attribute name="VENDOR" value="Texas Instruments" x="107.51" y="-12.6" size="1.778" layer="27" display="off"/>
 </element>
 <element name="U5" library="Voltage references" library_urn="urn:adsk.eagle:library:17280573" package="SOT-23-3" package3d_urn="urn:adsk.eagle:package:17280578/3" value="REF3318" x="55.75" y="74.5" smashed="yes" rot="R90">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="125.6" y="131.65" size="1.778" layer="27" rot="R90" display="off"/>
@@ -3255,8 +3255,8 @@ design rules under a new name.</description>
 <attribute name="DESCRIPTION" value=" Current Sensor 15.5A 1 Channel Hall Effect, Open Loop Bidirectional 12-PowerWFQFN " x="18.93" y="52.33" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MF" value="Allegro MicroSystems LLC" x="18.93" y="52.33" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MP" value="ACS711KEXLT-15AB-T" x="18.93" y="52.33" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="71" y="79" size="0.8128" layer="48" align="center"/>
 <attribute name="NAME" x="71" y="79" size="0.7112" layer="25" font="vector" align="center"/>
+<attribute name="NAME" x="71" y="79" size="0.8128" layer="48" align="center"/>
 <attribute name="PACKAGE" value="PowerWFQFN-12 Allegro MicroSystems LLC" x="18.93" y="52.33" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="PRICE" value="None" x="18.93" y="52.33" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="67.825" y="79" size="1.778" layer="27" rot="R270" align="center"/>
@@ -3267,15 +3267,15 @@ design rules under a new name.</description>
 <element name="U8" library="EEPROM" library_urn="urn:adsk.eagle:library:17229645" package="SOIC8" package3d_urn="urn:adsk.eagle:package:17229650/2" value="24LC64T-I/SN" x="46.75" y="40" smashed="yes" rot="R270">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="4.84" y="20.95" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="24LC64T-I/SN" x="4.84" y="20.95" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="46.75" y="40" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="46.75" y="40" size="1.27" layer="48" ratio="6" align="center"/>
+<attribute name="NAME" x="46.75" y="40" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VENDOR" value="Microchip" x="4.84" y="20.95" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="U9" library="Silicon labs" library_urn="urn:adsk.eagle:library:16809146" package="QFN20C_3X3" package3d_urn="urn:adsk.eagle:package:16809167/2" value="CP2102N-A01-GQFN20" x="14.75" y="78.5" smashed="yes" rot="R270">
 <attribute name="COPYRIGHT" value="Copyright (C) 2016 Accelerated Designs. All rights reserved" x="-46.21" y="-10.4" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="CP2102N-A01-GQFN20" x="-46.21" y="-10.4" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="17.54" y="78.5" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="NAME" x="14.75" y="78.5" size="1.016" layer="48" ratio="6" align="center"/>
+<attribute name="NAME" x="17.54" y="78.5" size="0.7112" layer="25" font="vector" align="center"/>
 <attribute name="VENDOR" value="Silicon Labs" x="-46.21" y="-10.4" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="X1" library="resonators and oscillators" library_urn="urn:adsk.eagle:library:14612365" package="MURATA_SMD_3P" package3d_urn="urn:adsk.eagle:package:14612368/8" value="CSTNE" x="73.5" y="43.5" smashed="yes" rot="R270">
@@ -3593,8 +3593,8 @@ design rules under a new name.</description>
 <vertex x="4" y="18"/>
 <vertex x="9" y="13"/>
 <vertex x="20" y="13"/>
-<vertex x="20.5" y="12.5"/>
-<vertex x="20.5" y="11"/>
+<vertex x="21" y="12"/>
+<vertex x="21" y="11.5"/>
 <vertex x="19.5" y="10"/>
 <vertex x="19.5" y="7.5"/>
 <vertex x="23.75" y="3.25"/>
@@ -3670,8 +3670,8 @@ design rules under a new name.</description>
 <vertex x="23.5" y="8.5"/>
 <vertex x="24.75" y="8.5"/>
 <vertex x="24.75" y="8.75"/>
-<vertex x="25" y="9"/>
-<vertex x="25" y="9.5"/>
+<vertex x="25.25" y="9.25"/>
+<vertex x="25.25" y="9.75"/>
 <vertex x="25.5" y="10"/>
 <vertex x="27" y="10"/>
 <vertex x="28" y="9"/>
@@ -3795,7 +3795,7 @@ design rules under a new name.</description>
 <vertex x="60.5" y="54.25"/>
 <vertex x="59.75" y="55"/>
 </polygon>
-<wire x1="59.25" y1="55" x2="59.25" y2="57.81915" width="0.3" layer="1"/>
+<wire x1="59.25" y1="55" x2="59.25" y2="58.06915" width="0.3" layer="1"/>
 <polygon width="0.2" layer="1" thermals="no">
 <vertex x="76.5" y="89.5"/>
 <vertex x="76.5" y="82.5"/>
@@ -4320,7 +4320,7 @@ design rules under a new name.</description>
 <via x="49.25" y="71.75" extent="1-16" drill="0.3"/>
 <via x="57.25" y="63" extent="1-16" drill="0.3"/>
 <via x="62.75" y="58" extent="1-16" drill="0.3"/>
-<via x="59.25" y="59.25" extent="1-16" drill="0.3"/>
+<via x="59.25" y="59.75" extent="1-16" drill="0.3"/>
 <via x="56.5" y="59" extent="1-16" drill="0.3"/>
 <via x="56.5" y="60" extent="1-16" drill="0.3"/>
 <via x="48" y="57" extent="1-16" drill="0.3"/>
@@ -4443,15 +4443,15 @@ design rules under a new name.</description>
 <via x="27" y="57" extent="1-16" drill="0.3"/>
 <via x="43" y="54" extent="1-16" drill="0.3"/>
 <via x="14.75" y="78.5" extent="1-16" drill="0.3"/>
-<wire x1="14" y1="77.0476" x2="14" y2="74.75" width="0.1524" layer="1"/>
+<wire x1="14" y1="77.0476" x2="14" y2="74.75" width="0.2" layer="1"/>
 <via x="14" y="74.75" extent="1-16" drill="0.3"/>
-<wire x1="31" y1="32.5" x2="31.75" y2="33.25" width="0.1524" layer="1"/>
+<wire x1="31" y1="32.5" x2="31.75" y2="33.25" width="0.2" layer="1"/>
 <via x="31.75" y="33.25" extent="1-16" drill="0.3"/>
-<wire x1="31" y1="32.5" x2="30.25" y2="33.25" width="0.1524" layer="1"/>
+<wire x1="31" y1="32.5" x2="30.25" y2="33.25" width="0.2" layer="1"/>
 <via x="30.25" y="33.25" extent="1-16" drill="0.3"/>
-<wire x1="31" y1="32.5" x2="30.25" y2="31.75" width="0.1524" layer="1"/>
+<wire x1="31" y1="32.5" x2="30.25" y2="31.75" width="0.2" layer="1"/>
 <via x="30.25" y="31.75" extent="1-16" drill="0.3"/>
-<wire x1="31" y1="32.5" x2="31.75" y2="31.75" width="0.1524" layer="1"/>
+<wire x1="31" y1="32.5" x2="31.75" y2="31.75" width="0.2" layer="1"/>
 <via x="31.75" y="31.75" extent="1-16" drill="0.3"/>
 <wire x1="13.5" y1="65.5" x2="13.5" y2="66.75" width="0.2" layer="1"/>
 <wire x1="13.5" y1="66.75" x2="14.25" y2="67.5" width="0.2" layer="1"/>
@@ -4469,8 +4469,8 @@ design rules under a new name.</description>
 <vertex x="56.75" y="51.25"/>
 <vertex x="56" y="51.25"/>
 </polygon>
-<via x="53" y="52.25" extent="1-16" drill="0.35"/>
-<via x="46.75" y="28.5" extent="1-16" drill="0.35"/>
+<via x="53" y="52.25" extent="1-16" drill="0.3"/>
+<via x="46.75" y="28.5" extent="1-16" drill="0.3"/>
 </signal>
 <signal name="+5V">
 <contactref element="U2" pad="1"/>
@@ -4719,8 +4719,6 @@ design rules under a new name.</description>
 <vertex x="56.75" y="72"/>
 <vertex x="56" y="72"/>
 </polygon>
-<wire x1="32.595" y1="74.4638" x2="31.4362" y2="74.4638" width="0.5" layer="1"/>
-<wire x1="31.4362" y1="74.4638" x2="31.25" y2="74.65" width="0.5" layer="1"/>
 <wire x1="73.75" y1="78.25" x2="73.75" y2="77.9" width="0.2" layer="1"/>
 <wire x1="72.45" y1="78.85" x2="73.65" y2="78.85" width="0.3" layer="1"/>
 <wire x1="73.65" y1="78.85" x2="73.75" y2="78.75" width="0.3" layer="1"/>
@@ -4747,9 +4745,7 @@ design rules under a new name.</description>
 <vertex x="55.25" y="55"/>
 <vertex x="55.75" y="55.5"/>
 <vertex x="58.75" y="55.5"/>
-<vertex x="58.75" y="56.5"/>
-<vertex x="58" y="56.5"/>
-<vertex x="57.75" y="56.75"/>
+<vertex x="58.75" y="56.75"/>
 <vertex x="54.25" y="56.75"/>
 <vertex x="53.25" y="55.75"/>
 <vertex x="53.25" y="53.5"/>
@@ -4914,7 +4910,6 @@ design rules under a new name.</description>
 <wire x1="9.2" y1="79.5" x2="11" y2="79.5" width="0.5" layer="16"/>
 <wire x1="11" y1="79.5" x2="19.25" y2="79.5" width="0.5" layer="16"/>
 <wire x1="23" y1="75.75" x2="30.5" y2="75.75" width="0.5" layer="16"/>
-<wire x1="30.5" y1="75.75" x2="31.25" y2="75.75" width="0.5" layer="16"/>
 <wire x1="19.25" y1="79.5" x2="23" y2="75.75" width="0.5" layer="16"/>
 <wire x1="50.75" y1="83.75" x2="50.75" y2="84.75" width="0.5" layer="16"/>
 <wire x1="50.75" y1="84.75" x2="50.25" y2="85.25" width="0.5" layer="16"/>
@@ -4923,9 +4918,9 @@ design rules under a new name.</description>
 <wire x1="34" y1="82" x2="31.25" y2="79.25" width="0.5" layer="16"/>
 <wire x1="31.25" y1="79.25" x2="31.25" y2="75.75" width="0.5" layer="16"/>
 <wire x1="39.5" y1="85.25" x2="36.25" y2="82" width="0.5" layer="16"/>
-<wire x1="31.25" y1="74.65" x2="31.25" y2="75.75" width="0.5" layer="1"/>
+<wire x1="31.25" y1="74.65" x2="31.25" y2="75.25" width="0.5" layer="1"/>
+<wire x1="31.25" y1="75.25" x2="31.25" y2="75.75" width="0.5" layer="1"/>
 <wire x1="31.25" y1="74.65" x2="31.25" y2="75" width="0.5" layer="1"/>
-<wire x1="31.25" y1="75" x2="30.5" y2="75.75" width="0.5" layer="1"/>
 <via x="30.5" y="75.75" extent="1-16" drill="0.3"/>
 <wire x1="73.75" y1="77.9" x2="73.85" y2="78" width="0.5" layer="1"/>
 <wire x1="73.85" y1="78" x2="74.75" y2="78" width="0.5" layer="1"/>
@@ -4936,8 +4931,13 @@ design rules under a new name.</description>
 <wire x1="63.5" y1="69" x2="59" y2="69" width="0.5" layer="16"/>
 <wire x1="67.25" y1="72.75" x2="63.5" y2="69" width="0.5" layer="16"/>
 <wire x1="11" y1="77.115025" x2="11" y2="79.5" width="0.5" layer="16"/>
-<wire x1="9.2" y1="79.5" x2="9.35" y2="79.65" width="0.1524" layer="1"/>
-<wire x1="9.35" y1="79.65" x2="10.25" y2="79.65" width="0.1524" layer="1"/>
+<wire x1="9.2" y1="79.5" x2="9.35" y2="79.65" width="0.2" layer="1"/>
+<wire x1="9.35" y1="79.65" x2="10.25" y2="79.65" width="0.2" layer="1"/>
+<wire x1="31.25" y1="74.65" x2="32.4088" y2="74.65" width="0.5" layer="1"/>
+<wire x1="32.4088" y1="74.65" x2="32.595" y2="74.4638" width="0.5" layer="1"/>
+<wire x1="31.25" y1="75.25" x2="30.75" y2="75.75" width="0.5" layer="1"/>
+<wire x1="30.75" y1="75.75" x2="30.5" y2="75.75" width="0.5" layer="1"/>
+<wire x1="30.5" y1="75.75" x2="31.25" y2="75.75" width="0.5" layer="1"/>
 </signal>
 <signal name="USART3_TX">
 <contactref element="U3" pad="30"/>
@@ -5627,7 +5627,7 @@ design rules under a new name.</description>
 <wire x1="31.75" y1="34.5" x2="31.75" y2="36" width="0.2" layer="1"/>
 <wire x1="31.75" y1="36" x2="40.5" y2="44.75" width="0.2" layer="1"/>
 <wire x1="40.5" y1="44.75" x2="57.75" y2="44.75" width="0.2" layer="1"/>
-<wire x1="31.75" y1="34.4" x2="31.75" y2="34.5" width="0.1524" layer="1"/>
+<wire x1="31.75" y1="34.4" x2="31.75" y2="34.5" width="0.2" layer="1"/>
 </signal>
 <signal name="MOTOR_ENCODER1">
 <contactref element="U3" pad="38"/>
@@ -5917,8 +5917,8 @@ design rules under a new name.</description>
 <via x="11.25" y="20.5" extent="1-16" drill="0.3"/>
 <wire x1="11.25" y1="20.5" x2="16.75" y2="26" width="0.2" layer="16"/>
 <wire x1="16.75" y1="26" x2="19.5" y2="26" width="0.2" layer="16"/>
-<wire x1="11.25" y1="20.5" x2="10.73" y2="21.02" width="0.1524" layer="1"/>
-<wire x1="10.73" y1="21.02" x2="10.73" y2="21.595" width="0.1524" layer="1"/>
+<wire x1="11.25" y1="20.5" x2="10.73" y2="21.02" width="0.2" layer="1"/>
+<wire x1="10.73" y1="21.02" x2="10.73" y2="21.595" width="0.2" layer="1"/>
 </signal>
 <signal name="GL2">
 <contactref element="Q3" pad="4"/>
