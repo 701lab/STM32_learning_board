@@ -18,11 +18,17 @@ int main(void)
 //	gpio_setup();
 
 	full_device_setup(no, no);
+	basic_uart2_setup(19200);
+
 
 	while (1)
 	{
+
+		GPIOB->ODR ^= 0x60;
+		uart2_send_byte(54);
+		delay_in_milliseconds(100);
 //		GPIOB->ODR ^= 0x60;
-		dummy_delay(1000000);
+//		dummy_delay(1000000);
 	}
 
 //	// Basic button test

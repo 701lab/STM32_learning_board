@@ -92,6 +92,10 @@ void timers_setup(void);
  */
 void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts);
 
+/*
+	@brief Makes program stop for given duration
+ */
+void delay_in_milliseconds(const uint16_t time_in_millisecond);
 
 /*
 	@brief Makes program stop for given duration
@@ -119,6 +123,17 @@ uint32_t pll_setup(uint32_t is_HSE_clock_source);
 	@brief Sets up GPIO for all needed on device functions
  */
 void gpio_setup(void);
+
+
+/*
+	@brief	Enables UART 1 with a given baud rate with TX and RX enable and default setting in everything else
+ */
+void basic_uart2_setup(const uint32_t transmission_speed_in_bauds);
+
+/*
+	 @brief	Sends given byte when TX buffer is empty
+ */
+void uart2_send_byte(const uint8_t message_byte);
 
 // **************************************** //
 // ****** Non user-adjustable defines ***** //

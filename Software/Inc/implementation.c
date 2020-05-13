@@ -544,7 +544,7 @@ void timers_setup(void)
 	TIM3->CNT = 0;			// Clear counter before start
 	TIM3->CR1 |= TIM_CR1_CEN;
 
-	//*** TIM15 test setup ***//
+	//*** TIM15 setup ***//
 	TIM15->PSC |= (uint32_t)(SYSCLK_FREQUENCY / 36000 - 1); //
 	TIM15->ARR = 35999; 	// 60 second * 60 millisecond * 10 - 1 to get 0.1 milliseconds step
 	TIM15->CNT = 0;			// Clear counter before start
@@ -552,22 +552,20 @@ void timers_setup(void)
 	NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn);
 	TIM15->CR1 |= TIM_CR1_CEN;
 
+	//*** TIM16 setup ***//
+	TIM16->PSC |= (uint32_t)(SYSCLK_FREQUENCY / 1000 - 1); 	// One millisecond step
+	TIM16->CNT = 0;			// Clear counter before start
+	TIM16->DIER |= TIM_DIER_UIE;
+	NVIC_EnableIRQ(TIM1_UP_TIM16_IRQn);
+	TIM16->CR1 |= TIM_CR1_OPM;	// One pulse mode. Counter don't need to be started
 
-
-////		//*** TIM15 setup ***//
-////		// Used to count millisecond for speed calculations
-////		TIM15->PSC |= 47; 	// 24 Mhz clock -> 500.000 pulses per second into CNT
-////		TIM15->ARR = 65535; 	// 2^16-1 - maximum value for this timer, so program should have minimum 16 speed calculations per second not to loose data
-////		TIM15->CNT = 0;			// Clear counter before start
-////		TIM15->CR1 |= TIM_CR1_CEN;
-//
-//	//*** TIM16 setup ***//
+//	//For precise speed measurement (
+//	//*** TIM17 setup ***//
 //	// Used to count millisecond for speed calculations
-//	TIM16->PSC |= (uint32_t)(SYSCLK_FREQUENCY / 1000 - 1); 	// One millisecond step
-//	TIM16->CNT = 0;			// Clear counter before start
-//	TIM16->DIER |= TIM_DIER_UIE;
-//	NVIC_EnableIRQ(TIM16_IRQn);
-//	TIM16->CR1 |= TIM_CR1_OPM;	// One pulse mode. Counter don't need to be started
+//	TIM17->PSC |= 47; 	// 24 Mhz clock -> 500.000 pulses per second into CNT // Need to be changed to automaticly calculate value depending on the encoder PPR and system frequensy
+//	TIM17->ARR = 65535; 	// 2^16-1 - maximum value for this timer, so program should have minimum 16 speed calculations per second not to loose data
+//	TIM17->CNT = 0;			// Clear counter before start
+//	TIM17->CR1 |= TIM_CR1_CEN;
 
 	//*** System timer setup ***//
 	SysTick->LOAD = SYSCLK_FREQUENCY / (8 * SYSTICK_FREQUENCY) - 1;
@@ -577,6 +575,38 @@ void timers_setup(void)
 }
 
 
+void basic_uart2_setup(const uint32_t transmission_speed_in_bauds)
+{
+	RCC->APB1ENR1 |= RCC_APB1ENR1_USART2EN;
+
+	USART2->BRR = SYSCLK_FREQUENCY/transmission_speed_in_bauds;
+	USART2->CR1 |= USART_CR1_UE;
+	USART2->CR1 |= USART_CR1_TE | USART_CR1_RE;
+}
+
+// @brief Sends given byte when TX buffer is empty
+void uart2_send_byte(const uint8_t message_byte)
+{
+	while((USART2->ISR & USART_ISR_TC) != USART_ISR_TC){}
+	while((USART2->ISR & USART_ISR_TXE_TXFNF) != USART_ISR_TXE_TXFNF) {}
+	USART2->TDR = message_byte;
+}
+
+
+void TIM1_UP_TIM16_IRQHandler()
+{
+	TIM16->SR &= ~TIM_SR_UIF;
+	delay_is_finished = yes;
+}
+
+
+void delay_in_milliseconds(const uint16_t time_in_millisecond){
+	TIM16->ARR = time_in_millisecond-1;
+	TIM16->CR1 |= TIM_CR1_CEN;
+	delay_is_finished = no;
+	while(delay_is_finished == no){}
+
+}
 
 
 void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts)
@@ -613,8 +643,6 @@ void TIM1_BRK_TIM15_IRQHandler()
 
 	time_from_log_enable_in_seconds += 1;
 
-
-	GPIOB->ODR ^= 0x40;
 	// Place to put code to write into EEPROM (for development of future devices)
 }
 
