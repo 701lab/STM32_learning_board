@@ -22,8 +22,33 @@
  */
 // Утсанавливает частоту процессора
 #ifndef SYSCLK_FREQUENCY
-	#define SYSCLK_FREQUENCY 				8000000 // Hz = 24 Mhz
+	#define SYSCLK_FREQUENCY 				48000000 // Hz = 24 Mhz
 #endif /* SYSCLK_FREQUENCY */
+
+/*
+	@brief	Amount of times system clock interrupt occurs in one second
+
+	Determines control system outer loop frequency
+ */
+#ifndef SYSTICK_FREQUENCY
+	#define SYSTICK_FREQUENCY				40		// Hz
+#endif /* SYSTICK_FREQUENCY */
+
+
+/*
+	@brief 	PWM frequency for motor control in Hz and related PWM precision
+
+	@Calculations	PWM precision can be calculated as:
+
+					 SYSCLK_FREQUENCY
+	PWM_precision = ------------------
+ 	 	 	 	 	  PWM_FREQUENCY
+ */
+#ifndef PWM_FREQUENCY
+	#define PWM_FREQUENCY 					20000	// Hz
+	#define PWM_PRECISION					( SYSCLK_FREQUENCY / PWM_FREQUENCY - 1 )	// -1 is needed for proper timers setup. Equation shouldn't be changed
+#endif /* PWM_FREQUENCY */
+
 
 /*
 	@brief Mistakes log is used to collect mistakes codes during runtime
@@ -37,6 +62,10 @@
 #ifndef MISTAKES_LOG_SIZE
 	#define MISTAKES_LOG_SIZE				100
 #endif /* MISTAKES_LOG_SIZE */
+
+
+
+
 
 // **************************** //
 // ****** User functions ****** //
@@ -52,6 +81,16 @@ uint32_t add_to_mistakes_log(uint32_t mistake_code);
 	@brief Sets up GPIO for all needed on device functions
  */
 void gpio_setup(void);
+
+/*
+	@brief Sets up all used on the board timers and enables desired interrupts
+ */
+void timers_setup(void);
+
+/*
+	@brief Sets up all desired device peripherals
+ */
+void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts);
 
 
 /*

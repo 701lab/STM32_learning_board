@@ -484,12 +484,105 @@ void gpio_setup(void)
 	GPIOD->MODER |= (GPIO_DIGITAL_OUT << GPIO_MODER_MODE2_Pos);
 }
 
+/*!
+	@brief	Sets up all used on the board timers and enables desired interrupts
+
+	@Documentation:
+		> STM32G0x1 reference manual chapter 5 (RCC) - all information about peripheral locations and enabling;
+		> STM32G0x1 reference manual chapter 20 (TIM1) - TIM1 setup information;
+		> STM32G0x1 reference manual chapter 21 (TIM2/TIM3) - TIM2 and TIM3 setup information;
+		> STM32G0x1 reference manual chapter 23 (TIM14) - TIM14 setup information;
+	 	> Cortex-M0+ programming manual for stm32 chapter 4 - SysTick timer (STK)(4.4).
+
+	Timer channels allocations with respect to function.
+
+	Timer 			| function
+	---------------	| ----------------------------------------------------
+	TIM1			| generates PWM for motor control on all 4 channels
+	TIM1 CH1		| DRV8848 AIN1
+	TIM1 CH2 		| DRV8848 AIN2
+	TIM1 CH3		| DRV8848 BIN2
+	TIM1 CH4		| DRV8848 BIN1
+	--------------- | ----------------------------------------------------
+	TIM2			| Motor1 encoder pulses counter
+	TIM2 CH1		| Motor1 encoder phase A counter
+	TIM2 CH2		| Motor1 encoder phase B counter
+	--------------- | ----------------------------------------------------
+	TIM3			| Motor2 encoder pulses counter
+	TIM3 CH1		| Motor2 encoder phase A counter
+	TIM3 CH2		| Motor2 encoder phase B counter
+	--------------- | ----------------------------------------------------
+	TIM14			| Counts time in 0.125 millisecond steps for debug log.
+					| Resets exactly every minute
+					|
+
+	@calculation
+
+	TIM14_prescaler = -----------------
+ */
+void timers_setup(void)
+{
+	//*** Timers peripheral clock enable ***//
+	RCC->APB1ENR1 |= RCC_APB1ENR1_TIM3EN;
+	RCC->APB2ENR |= RCC_APB2ENR_TIM8EN | RCC_APB2ENR_TIM15EN | RCC_APB2ENR_TIM16EN | RCC_APB2ENR_TIM17EN;
+
+	//*** TIM8 PWM setup ***//
+	TIM8->PSC = 0; 				// Timer speed = bus speed
+	TIM8->ARR = PWM_PRECISION;
+	TIM8->CCMR2 |= 0x6868;	// PWM mode 1 enable and output compare preload enable on channels 3 and 4
+	TIM8->CCER |= 0x1100;	// Enable CH1-4
+	TIM8->CR1 |= TIM_CR1_ARPE;	// Enable Auto reload preload
+	TIM8->BDTR |= TIM_BDTR_MOE;	// Main output enable
+	TIM8->CR1 |= TIM_CR1_CEN; // Enable timer
+	TIM8->CCR3 = 0;
+	TIM8->CCR4 = 0;
+
+	//*** Timer3 encoder setup ***//
+	TIM3->ARR = 65535; 		// 2^16-1 - maximum value for this timer. No prescaler, so timer is working with max speed
+	TIM3->CCER |= 0x02;		// Should be uncommented if encoder direction reversal is needed
+	TIM3->SMCR |= 0x03;		// Encoder mode setup
+	TIM3->CNT = 0;			// Clear counter before start
+	TIM3->CR1 |= TIM_CR1_CEN;
+
+	//*** TIM15 test setup ***//
+	TIM15->PSC |= (uint32_t)(SYSCLK_FREQUENCY / 36000 - 1); //
+	TIM15->ARR = 35999; 	// 60 second * 60 millisecond * 10 - 1 to get 0.1 milliseconds step
+	TIM15->CNT = 0;			// Clear counter before start
+	TIM15->DIER |= TIM_DIER_UIE;
+	NVIC_EnableIRQ(TIM1_BRK_TIM15_IRQn);
+	TIM15->CR1 |= TIM_CR1_CEN;
+
+
+
+////		//*** TIM15 setup ***//
+////		// Used to count millisecond for speed calculations
+////		TIM15->PSC |= 47; 	// 24 Mhz clock -> 500.000 pulses per second into CNT
+////		TIM15->ARR = 65535; 	// 2^16-1 - maximum value for this timer, so program should have minimum 16 speed calculations per second not to loose data
+////		TIM15->CNT = 0;			// Clear counter before start
+////		TIM15->CR1 |= TIM_CR1_CEN;
+//
+//	//*** TIM16 setup ***//
+//	// Used to count millisecond for speed calculations
+//	TIM16->PSC |= (uint32_t)(SYSCLK_FREQUENCY / 1000 - 1); 	// One millisecond step
+//	TIM16->CNT = 0;			// Clear counter before start
+//	TIM16->DIER |= TIM_DIER_UIE;
+//	NVIC_EnableIRQ(TIM16_IRQn);
+//	TIM16->CR1 |= TIM_CR1_OPM;	// One pulse mode. Counter don't need to be started
+
+	//*** System timer setup ***//
+	SysTick->LOAD = SYSCLK_FREQUENCY / (8 * SYSTICK_FREQUENCY) - 1;
+	SysTick->VAL = 0;
+	NVIC_EnableIRQ(SysTick_IRQn);
+	SysTick->CTRL |= 0x03; // Start SysTick, enable interrupt
+}
+
+
 
 
 void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts)
 {
 
-	system_clock_setup();
+	add_to_mistakes_log(system_clock_setup());
 
 	gpio_setup();
 
@@ -520,5 +613,8 @@ void TIM1_BRK_TIM15_IRQHandler()
 
 	time_from_log_enable_in_seconds += 1;
 
+
+	GPIOB->ODR ^= 0x40;
 	// Place to put code to write into EEPROM (for development of future devices)
 }
+
