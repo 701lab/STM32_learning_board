@@ -1,6 +1,5 @@
 #include "implementation.h"
 
-
 // ******** MCU connections overview ******** //
 /*
 	LEDs:
@@ -11,7 +10,7 @@
 		PB8-9 - RX and TX respectively (FDCAN1, alternate function 9);
 
 	User SPI:
-		PC10-PC12 - SCK, MISO, MOSI respectively (SPI3, alternate function 0);
+		PC10-PC12 - SCK, MISO, MOSI respectively (SPI3, alternate function 6);
 		PD2 - CS (digital output) - user SPI chip select;
 
 	USB:
@@ -50,17 +49,476 @@
 		PC1-3 - potentiometers 1 to 3 respectively (ADC1 IN7-9 respectively)
 
 	Current sensor (ACS711KEXLT-15AB-T):
-		PA0 - VIOut (ADC1 IN1) - Voltage proportional to thw flowing current;
+		PA0 - VIOut (ADC1 IN1) - Voltage proportional to the flowing current;
 
 	Current sensor (INA240A1PW):
 		PA1 - OUT (ADC1 IN2) - Voltage proportional to the flowing current;
 
-	TIM15 - high speed counter for precise speed calculations.
+	TIM15 - counts time with 0.1 ms precision for mistakes log
 
 	TIM16 - timer for proper delay implementation
 
-	TIM17 - counts time with 0.1 ms precision for mistakes log
+	TIM17 - high speed counter for precise speed calculations.
 
  */
 
+// Обязательно протестировать !!
+/*
+	@brief Makes log entry with given mistake code at current time.
+		If mistake code is equal to 0 doens't log it
 
+	@param[in] mistake_code - mistakes code to be written to log.
+
+	@return Mistake code that was inputted to the function
+ */
+uint32_t add_to_mistakes_log(uint32_t mistake_code)
+{
+	if(mistake_code == 0)
+	{
+		return 0;
+	}
+
+	mistakes_log[mistakes_log_pointer].mistake_code = mistake_code;
+	mistakes_log[mistakes_log_pointer].mistake_time_in_seconds = time_from_log_enable_in_seconds;
+	mistakes_log[mistakes_log_pointer].mistake_time_in_milliseconds = TIM15->CNT;
+
+	++mistakes_log_pointer;
+	if (mistakes_log_pointer == MISTAKES_LOG_SIZE)
+	{
+		mistakes_log_pointer = 0;
+	}
+
+	return mistake_code;
+}
+
+
+
+
+/*!
+	@brief 	sets up SYSCLK to SYSCLK_FREQUENCY with taking into account problems with different sources
+
+	Tries to start up HSE. Calls PLL startup functions with HSE as a source if it started correctly and HSI otherwise.
+
+	@return	mistake code. If HSE fails and PLL starts - 3, if PLL fails with any source - PLL fail code.
+
+	@Documentation:
+	> STM32G4 reference manual chapter 5 (Flash for category 2 devices) - flash access latency (5.3.3);
+	> STM32G4 reference manual chapter 7 (RCC) - all information about clock setup.
+ */
+
+
+// *** System clock prescalers *** //
+#if (SYSCLK_FREQUENCY >= 32000000)
+	#define	PLLN_VALUE  			(SYSCLK_FREQUENCY / 2000000)
+	#define PLLR_VALUE				(0U) // PLLR is dividing by 2
+#endif
+
+#if (SYSCLK_FREQUENCY < 32000000)
+	#define	PLLN_VALUE  			(SYSCLK_FREQUENCY / 500000)
+	#define PLLR_VALUE				(3U) // PLLR is dividing by 8
+#endif
+
+#define PLLM_VALUE 				(1U) // PLLM is dividing by 2
+#define PLLM_VALUE_WITH_HSI		(3U) // PLLM is dividing by 4
+#define PLLQ_VALUE				(3U) // PLLQ is dividing by 8
+#define PLLP_VALUE 				(8U) // PLLP current divider value
+
+// Над этой функций надо еще поработать, улучшить коментарии и проверить до конца логику работы, а также точно определеиться как где и какие ошибки должны обрабатываться
+
+// Кроме этго в документации рекуомендуется разгонять и замедлять часы при большом шаге поэтапно. Если происходит разгон больше чем за 80 MHz, стоит сделать промежуточный шаг длительностью 1микросекунду на редней частоте.
+uint32_t system_clock_setup(void)
+{
+
+	/* Flash read access latency from SYSCLK_FREQUENCY. See RM chapter 3.3.4 */
+
+	#if ( SYSCLK_FREQUENCY > 120000000 )
+		FLASH->ACR &= ~ FLASH_ACR_LATENCY_Msk;					// Clear latency setup
+		FLASH->ACR |= FLASH_ACR_LATENCY_4WS;	// 0x04 - 5 CPU cycles read latency (4 + 1)
+
+	#elif ( SYSCLK_FREQUENCY > 90000000 )
+		FLASH->ACR &= ~ FLASH_ACR_LATENCY_Msk;					// Clear latency setup
+		FLASH->ACR |= FLASH_ACR_LATENCY_3WS;	// 0x03 - 4 CPU cycles read latency (3 + 1)
+
+	#elif ( SYSCLK_FREQUENCY > 60000000 )
+		FLASH->ACR &= ~ FLASH_ACR_LATENCY_Msk;					// Clear latency setup
+		FLASH->ACR |= FLASH_ACR_LATENCY_2WS;	// 0x02 - 3 CPU cycles read latency (2 + 1)
+
+	#elif ( SYSCLK_FREQUENCY > 30000000 )
+		FLASH->ACR &= ~ FLASH_ACR_LATENCY_Msk;					// Clear latency setup
+		FLASH->ACR |= FLASH_ACR_LATENCY_1WS;	// 0x01 - 2 CPU cycles read latency (1 + 1)
+
+	#else
+		FLASH->ACR &= ~ FLASH_ACR_LATENCY_Msk;					// Clear latency setup - 1 CPU cycle read latency
+	#endif
+
+	RCC->CR |= RCC_CR_HSEON;
+
+	for ( uint32_t i = 0; i < DUMMY_DELAY_VALUE; ++i )
+	{
+		if ( (RCC->CR & RCC_CR_HSERDY) == RCC_CR_HSERDY )
+		{
+			// Enable clock security system
+			RCC->CR |= RCC_CR_CSSON;
+
+			const uint32_t pll_setup_return_value = pll_setup(HSE_IS_OK);
+
+			if ( pll_setup_return_value == 0 )
+			{
+				// Everything is ok. HSI will be stopped for so it won't consume energy
+				RCC->CR &= ~RCC_CR_HSION_Msk;
+				return 0;
+			}
+			else
+			{
+				RCC->CR &= ~RCC_CR_HSEON;				// Stop HSE so it won't consume power.
+				FLASH->ACR &= ~FLASH_ACR_LATENCY_Msk;	// Reset FLASH latency because HSI is 16 Mhz
+				return PLL_FAILED;						// PLL fails, so HSI is a clock source
+			}
+		}
+	}
+
+	// HSE hasn't started
+	RCC->CR &= ~RCC_CR_HSEON;	// Stop HSE so it won't consume power.
+	add_to_mistakes_log(HSE_FAILED_TO_START);
+
+	const uint32_t pll_setup_return_value = pll_setup(HSE_IS_NOT_OK);
+
+	if ( pll_setup_return_value )
+	{
+		return pll_setup_return_value;
+	}
+
+	return 3; // HSE fail code
+}
+
+/*!
+	@brief	starts PLL. Takes into account HSE status
+
+	@param[in] is_HSE_clock_source - status of HSE. If HSE is ok uses it as PLL clock source, uses HSI otherwise.
+
+	@return		Mistake code: 0 - if everything s ok, 1 - if PLL start fail, 2 - if PLL fails to start as a clock source
+
+	@limitations 	For the sake of simplifying usage of the code only one multiplier of the frequency calculation equation should be variable.
+					Only frequencies multiple to 2Mhz and starting from 16Mhz are allowed: 16, 18, 20 ... 62, 64Mhz. Because values of PLLN lower then 8 and higher then 43 are not allowed.
+					This limitation allows switching frequency source between PLL on HSI and HSE without troubles.
+
+	@Documentation:
+		> STM32G0x1 reference manual chapter 5 (RCC) - all information about clock setup.
+
+	@Calculations
+	> When using 8 Mhz HSE (external oscillator) as a clock sours for PLL (default setup).
+
+		We take:
+
+		PLLR = 4
+		PLLM = 1
+		PLLN = SYSCLK_FREQUENCY / 2000000
+
+					oscillator_frequensy * PLLN       8 * PLLN
+		SYSCLK =  ------------------------------- = ------------
+						   PLLM * PLLR				   1 * 4
+
+		PLLN can be changed from 8 to 86, but only 8 to 43 are allowed, so we can have any frequency from 16 to 64 Mhz with a step of 2 Mhz and change in only one variable
+
+	> When using 16 Mhz HSI (internal oscillator) as a clock sours for PLL (critical - when HSE can't be enabled)
+
+		We take:
+
+		PLLR = 4
+		PLLM = 2
+		PLLN = SYSCLK_FREQUENCY / 2000000
+
+					oscillator_frequensy * PLLN       16 * PLLN
+		SYSCLK =  ------------------------------- = ------------
+						   PLLM * PLLR				   2 * 4
+
+		PLLN can be changed from 8 to 86, but only 8 to 43 are allowed, so we can have any frequency from 16 to 64 Mhz with a step of 2 Mhz and change in only one variable
+
+	@note 	If PLL is not working (i don't know if it is really possible) HSI is used as a clock source no matter of HSE status.
+
+	@note 	AHB prescaler always equals to 1, so HCLK = SYSCLK
+
+	@note 	APB prescaler always equals to 1
+ */
+uint32_t pll_setup(uint32_t is_HSE_clock_source)
+{
+	RCC->PLLCFGR = 0;
+
+	if ( is_HSE_clock_source == HSE_IS_OK )
+	{
+		RCC->PLLCFGR |= PLLP_VALUE << RCC_PLLCFGR_PLLPDIV_Pos
+				| PLLR_VALUE << RCC_PLLCFGR_PLLR_Pos
+				| RCC_PLLCFGR_PLLREN
+				| PLLQ_VALUE << RCC_PLLCFGR_PLLQ_Pos
+				| PLLN_VALUE << RCC_PLLCFGR_PLLN_Pos
+				| PLLM_VALUE << RCC_PLLCFGR_PLLM_Pos
+				| RCC_PLLCFGR_PLLSRC_HSE;
+	}
+	else
+	{
+		RCC->PLLCFGR |= PLLP_VALUE << RCC_PLLCFGR_PLLPDIV_Pos
+				| PLLR_VALUE << RCC_PLLCFGR_PLLR_Pos
+				| RCC_PLLCFGR_PLLREN
+				| PLLQ_VALUE << RCC_PLLCFGR_PLLQ_Pos
+				| PLLN_VALUE << RCC_PLLCFGR_PLLN_Pos
+				| PLLM_VALUE_WITH_HSI << RCC_PLLCFGR_PLLM_Pos
+				| RCC_PLLCFGR_PLLSRC_HSI;
+	}
+
+	RCC->CR |= RCC_CR_PLLON;
+
+	uint32_t safety_delay_counter = 0;
+
+	while ( (RCC->CR & RCC_CR_PLLRDY) != RCC_CR_PLLRDY )
+	{
+		++safety_delay_counter;
+		if ( safety_delay_counter > DUMMY_DELAY_VALUE )
+		{
+			RCC->CR &= ~RCC_CR_PLLON;	// Stop PLL so it won't consume power.
+			add_to_mistakes_log(PLL_FAILED);
+			return 1;					// PLL startup fail code
+		}
+	}
+
+	// At that point PLL is on and we can use it as a SYSCLK source
+	RCC->CFGR &= ~RCC_CFGR_SW_Msk;
+	RCC->CFGR |= RCC_CFGR_SW_PLL;
+
+	safety_delay_counter = 0;
+
+	while ( (RCC->CFGR & RCC_CFGR_SWS_PLL) != RCC_CFGR_SWS_PLL )
+	{
+		++safety_delay_counter;
+		if ( safety_delay_counter > DUMMY_DELAY_VALUE )
+		{
+			FLASH->ACR &= ~FLASH_ACR_LATENCY_Msk;	// Reset FLASH latency because HSI is 16 Mhz
+
+			// Use HSI as a clock source
+			RCC->CFGR &= ~RCC_CFGR_SW_Msk;
+			RCC->CFGR |= RCC_CFGR_SW_HSE ;
+
+			add_to_mistakes_log(PLL_FAILED);
+			return 1;								// PLL as clock source startup fail code
+		}
+	}
+
+	return 0;	// Everything is fine and online
+}
+
+/*
+	@brief	Non-maskable interrupt handler. Called when HSE fails. Tries to start PLL with HSI as a source
+
+	@Documentation:
+		> STM32G0x1 reference manual chapter 5 (RCC) - clock security system (5.2.8).
+
+	Right now I don't know if this interrupt can be called by any other system.
+	Because of it it doesn't check for call reason but can be changed in the future.
+ */
+void NMI_Handler()
+{
+	// Clear the clock security system interrupt flag
+	RCC->CICR |= RCC_CICR_CSSC;
+
+	add_to_mistakes_log(HSE_FAILED_WHILE_RUNNING);
+
+	// Wait until PLL is fully stopped
+	while ( (RCC->CR & RCC_CR_PLLRDY) == RCC_CR_PLLRDY ){}
+
+	// Isn't trying to use HSA, uses HSI instead. Tries to start PLL.
+	const uint32_t pll_setup_return_value = pll_setup(HSE_IS_NOT_OK);
+
+	if (pll_setup_return_value)
+	{
+		add_to_mistakes_log(PLL_FAILED);
+	}
+}
+
+/*
+	@brief	Sets up GPIO for all needed on device functions
+
+	@Documentation
+		> STM32G0x1 reference manual chapter 5 (RCC) - all information about peripheral locations and enabling.
+		> STM32G0x1 reference manual chapter 6 (GPIO) - information about GPIO setup.
+		> STM32G071x8/xb datasheet chapter 4 (Pinouts, pin description and alternate functions) - information about alternate function on the pins.
+
+	@note	In stm32g0 all GPIO are in analog mode by default (0b11)
+ */
+void gpio_setup(void)
+{
+	// *** GPIO peripheral clock enable *** //
+	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN | RCC_AHB2ENR_GPIOBEN | RCC_AHB2ENR_GPIOCEN | RCC_AHB2ENR_GPIODEN;
+
+	// *** Port A full GPIO setup *** //
+	GPIOA->MODER &= ~((GPIO_MODER_MSK << GPIO_MODER_MODE0_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE1_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE2_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE3_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE4_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE5_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE8_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE9_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE11_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE12_Pos));
+
+	GPIOA->MODER |= (GPIO_ANALOG_IN << GPIO_MODER_MODE0_Pos)
+			| (GPIO_ANALOG_IN << GPIO_MODER_MODE1_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE2_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE3_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE4_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE5_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE8_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE9_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE11_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE12_Pos);
+
+	GPIOA->OSPEEDR |= (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED2_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED3_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED11_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED12_Pos);	// LOW speed (up to 50 MHz) for UART and USB
+
+	GPIOA->AFR[0] |= (ALTERNATE_FUNCTION_7 << GPIO_AFRL_AFSEL2_Pos)
+			| (ALTERNATE_FUNCTION_7 << GPIO_AFRL_AFSEL3_Pos);	// USART2 setup
+
+	GPIOA->AFR[1] |= (ALTERNATE_FUNCTION_4 << GPIO_AFRH_AFSEL8_Pos)
+			| (ALTERNATE_FUNCTION_4 << GPIO_AFRH_AFSEL9_Pos);	// I2C2 setup
+
+	// *** Port B full GPIO setup *** //
+	GPIOB->MODER &= ~((GPIO_MODER_MSK << GPIO_MODER_MODE0_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE2_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE3_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE4_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE5_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE6_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE7_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE8_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE9_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE10_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE11_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE12_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE13_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE14_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE15_Pos));
+
+	GPIOB->MODER |= (GPIO_DIGITAL_OUT << GPIO_MODER_MODE0_Pos)
+			| (GPIO_ANALOG_IN << GPIO_MODER_MODE2_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE3_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE4_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE5_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE6_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE7_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE8_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE9_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE10_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE11_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE12_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE13_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE14_Pos)
+			| (GPIO_DIGITAL_OUT << GPIO_MODER_MODE15_Pos);
+
+	GPIOB->OSPEEDR |= (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED8_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED9_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED10_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED11_Pos);	// LOW speed (up to 50 Mhz) for USART3 and FDCAN1.
+
+	GPIOB->AFR[1] |= (ALTERNATE_FUNCTION_9 << GPIO_AFRH_AFSEL8_Pos)
+			| (ALTERNATE_FUNCTION_9 << GPIO_AFRH_AFSEL9_Pos)
+			| (ALTERNATE_FUNCTION_7 << GPIO_AFRH_AFSEL10_Pos)
+			| (ALTERNATE_FUNCTION_7 << GPIO_AFRH_AFSEL11_Pos);	// FDCAN1 and USART3 setup.
+
+	// *** Port C full GPIO setup *** //
+	GPIOC->MODER &= ~((GPIO_MODER_MSK << GPIO_MODER_MODE1_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE2_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE3_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE4_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE5_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE6_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE7_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE8_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE9_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE10_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE11_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE12_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE13_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE14_Pos)
+			| (GPIO_MODER_MSK << GPIO_MODER_MODE15_Pos));
+
+	GPIOC->MODER |= (GPIO_ANALOG_IN << GPIO_MODER_MODE1_Pos)
+			| (GPIO_ANALOG_IN << GPIO_MODER_MODE2_Pos)
+			| (GPIO_ANALOG_IN << GPIO_MODER_MODE3_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE4_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE5_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE6_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE7_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE8_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE9_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE10_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE11_Pos)
+			| (GPIO_ALTERNATE << GPIO_MODER_MODE12_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE13_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE14_Pos)
+			| (GPIO_DIGITAL_IN << GPIO_MODER_MODE15_Pos);
+
+	GPIOC->OSPEEDR |= (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED4_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED5_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED8_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED9_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED10_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED11_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED12_Pos)
+			| (GPIO_OSPEED_LOW << GPIO_OSPEEDR_OSPEED9_Pos);	// LOW speed (up to 50 Mhz) for USART1, TIM8 CH3-4 and SPI3.
+
+	GPIOC->AFR[0] |= (ALTERNATE_FUNCTION_7 << GPIO_AFRL_AFSEL4_Pos)
+			| (ALTERNATE_FUNCTION_7 << GPIO_AFRL_AFSEL5_Pos)
+			| (ALTERNATE_FUNCTION_2 << GPIO_AFRL_AFSEL6_Pos)
+			| (ALTERNATE_FUNCTION_2 << GPIO_AFRL_AFSEL7_Pos);	// USART1 and TIM3 CH1-2 setup.
+
+	GPIOC->AFR[1] |= (ALTERNATE_FUNCTION_4 << GPIO_AFRH_AFSEL8_Pos)
+			| (ALTERNATE_FUNCTION_4 << GPIO_AFRH_AFSEL9_Pos)
+			| (ALTERNATE_FUNCTION_6 << GPIO_AFRH_AFSEL10_Pos)
+			| (ALTERNATE_FUNCTION_6 << GPIO_AFRH_AFSEL11_Pos)
+			| (ALTERNATE_FUNCTION_6 << GPIO_AFRH_AFSEL12_Pos);	// TIM8 CH3-4 and SPI3 setup.
+
+	// *** Port D full GPIO setup *** //
+	GPIOD->MODER &= ~((GPIO_MODER_MSK << GPIO_MODER_MODE2_Pos));
+
+	GPIOD->MODER |= (GPIO_DIGITAL_OUT << GPIO_MODER_MODE2_Pos);
+}
+
+
+
+void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts)
+{
+
+	system_clock_setup();
+
+	gpio_setup();
+
+	timers_setup();
+
+//	if (should_setup_interrupts == yes)
+//	{
+//		interrupts_setup();
+//	}
+//
+//	if(should_inclued_interfaces == yes)
+//	{
+//		intrfaces_setup();
+//	}
+
+	return;
+}
+
+// Обязательно протестировать!!
+/*
+	@brief TIM14 overflow interrupt handler - counts minutes from enable of mistakes log.
+
+	@note If device have EEprom - saves mistake log into it every minute.
+ */
+void TIM1_BRK_TIM15_IRQHandler()
+{
+	TIM15->SR &= ~TIM_SR_UIF;
+
+	time_from_log_enable_in_seconds += 1;
+
+	// Place to put code to write into EEPROM (for development of future devices)
+}
