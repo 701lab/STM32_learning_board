@@ -66,6 +66,14 @@ int main(void)
 	// *** Данный пример разрабатывается именно для 48 Mhz частоты процессора и необходим для элементарного запуска CAN.
 	// Соответственно перед реальным применением его нужно будет значительно переделать, улучшая слабывае моменты, которых достаточно *** //
 
+	/*
+		DONE - разрабраться с настройками частоты (сейчас рабочая частота около 375 Khz, в то время как должна быть в районе 500 Khz по расчетам) делил не на тот коэффициент, упси дейзи
+		TODO - разоббраться с тем. почему микроконтроллер не отправляет сообщения в не тестовом режиме
+		TODO - по возможности разобраться с переносом сигнала на выход CAN-трансивера и почему этого не происходит, если не происходит
+
+		TODO - если все окажется хорошо, составить план следующих работ по CAN, которые будут проводиться сильно потом, так как они 100% будут времязастратными
+	 */
+
 	// CAN clock setup
 	RCC->CCIPR |= (2U) << RCC_CCIPR_FDCANSEL_Pos; // PLLCLK is used as FDCAN clock source
 
@@ -83,22 +91,30 @@ int main(void)
 	FDCAN1->DBTP = FDCAN_DBTP_TDC | 1 << FDCAN_DBTP_DBRP_Pos | 6 << FDCAN_DBTP_DTSEG1_Pos | 3 << FDCAN_DBTP_DTSEG2_Pos |  3 << FDCAN_DBTP_DSJW_Pos; // Prescaler of 2 so frequency is 24 tbs1 = 7 tbs2 = 4 actual data rate = 2Mbit/s
 
 	FDCAN1->NBTP = 0; // Reset register
-	FDCAN1->NBTP = 7 << FDCAN_NBTP_NBRP_Pos | 10 << FDCAN_NBTP_NTSEG1_Pos | 3 << FDCAN_NBTP_NTSEG2_Pos |  3 << FDCAN_NBTP_NSJW_Pos;	// Prescaler is 8 so frequency is 8Mhz, tbs1 = 11, tbs2 = 4 actual data rate is 0.5 Mbit/s
+	FDCAN1->NBTP = 5 << FDCAN_NBTP_NBRP_Pos | 10 << FDCAN_NBTP_NTSEG1_Pos | 3 << FDCAN_NBTP_NTSEG2_Pos |  3 << FDCAN_NBTP_NSJW_Pos;	// Prescaler is 8 so frequency is 8Mhz, tbs1 = 11, tbs2 = 4 actual data rate is 0.5 Mbit/s
 
 	// FDCAN mode setup. Test mode enabled with FDCAN and data rate switch enabled
-	FDCAN1->CCCR |= FDCAN_CCCR_TEST | FDCAN_CCCR_FDOE | FDCAN_CCCR_BRSE; // Add | FDCAN_CCCR_MON to enable internal loop back mode
+	FDCAN1->CCCR |= /*FDCAN_CCCR_TEST | */ FDCAN_CCCR_FDOE | FDCAN_CCCR_BRSE; // Add | FDCAN_CCCR_MON to enable internal loop back mode
 
-	// Enable loop back test mode
-	FDCAN1->TEST |= FDCAN_TEST_LBCK;
+	// Попробую отключить обработку проблем протокола и автоматическую повторную отправку
+	FDCAN1->CCCR |= FDCAN_CCCR_PXHD | FDCAN_CCCR_FDOE;
 
-	// Timestamp timer setup
-	FDCAN1->TSCC |= 15 << FDCAN_TSCC_TCP_Pos | 1 << FDCAN_TSCC_TSS_Pos;
+//	// Enable loop back test mode
+//	FDCAN1->TEST |= FDCAN_TEST_LBCK;
 
+//	// Timestamp timer setup
+//	FDCAN1->TSCC |= 15 << FDCAN_TSCC_TCP_Pos | 1 << FDCAN_TSCC_TSS_Pos;
 
 	// RX filter configuration
 	// 4 11 bit different types of filetrs and 2 29 bit different types of filters
 	FDCAN1->RXGFC |= 0 << FDCAN_RXGFC_LSE_Pos | 4 << FDCAN_RXGFC_LSS_Pos | 1 << FDCAN_RXGFC_ANFS_Pos | 1 << FDCAN_RXGFC_ANFE_Pos; // 0 - 29-bit filters, 4 11-bit filters, send not matching id to RX fifo 1
 //	FDCAN1->XIDAM // i don't know what does it do
+
+
+	// Finish CAN setup
+//	FDCAN1->CCCR &= ~ (FDCAN_CCCR_CCE);
+	FDCAN1->CCCR &= ~ (FDCAN_CCCR_INIT);
+//	FDCAN1->CCCR &= ~ (FDCAN_CCCR_INIT);
 
 
 	// Наверное это не должно тут быть, но я все равно попробую это сюда положить
@@ -114,9 +130,6 @@ int main(void)
 	*(uint32_t *)(FDCAN_11_BIT_FILTER_Pos + 8) =  filters_11_bit[2];
 	*(uint32_t *)(FDCAN_11_BIT_FILTER_Pos + 12) =  filters_11_bit[3];
 
-
-	// Finish CAN setup
-	FDCAN1->CCCR &= ~ (FDCAN_CCCR_INIT | FDCAN_CCCR_CCE);
 
 	// После этого в теории CAN должен быть инициализирован в тестовом режие, правда надо проверить в каком именно и готов к работе
 	// сейчас надо попробовать записать в Rx fifo сообщеньку и прочитать ее в отладчике
@@ -151,6 +164,7 @@ int main(void)
 		GPIOB->ODR ^= 0x60;
 //		uart2_send_byte(54);
 
+		FDCAN1->CCCR &= ~ (FDCAN_CCCR_INIT);
 		delay_in_milliseconds(500);
 
 		//	// Данные подготовил, теперь надо записать их в RX FIFO

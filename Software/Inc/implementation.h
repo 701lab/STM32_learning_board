@@ -22,7 +22,7 @@
  */
 // Утсанавливает частоту процессора
 #ifndef SYSCLK_FREQUENCY
-	#define SYSCLK_FREQUENCY 				48000000 // Hz = 24 Mhz
+	#define SYSCLK_FREQUENCY 				48000000 // Hz
 #endif /* SYSCLK_FREQUENCY */
 
 /*
