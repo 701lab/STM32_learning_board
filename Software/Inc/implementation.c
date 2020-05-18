@@ -574,6 +574,101 @@ void timers_setup(void)
 	SysTick->CTRL |= 0x03; // Start SysTick, enable interrupt
 }
 
+/*
+	@brief Sets up ADC
+ */
+void adc_setup()
+{
+
+	dma_setup();
+
+	// Set ADC clock
+
+	// Enable
+
+	RCC->AHB2ENR |= RCC_AHB2ENR_ADC12EN;
+
+
+
+}
+
+
+/*
+	@brief Sets up DMA
+ */
+void dma_setup(void)
+{
+
+}
+
+/*
+	@brief Enable SPI3 transmission with respect to given SPI speed
+ */
+void basic_spi3_setup(uint32_t transmittion_speed_in_hz)
+{
+	// 10 Mhz is standard high SPI speed, so in general, we should not use higher speeds. If input speed is greater than 10Mhz set it to 5Mhz and write input mistake to log
+	if(transmittion_speed_in_hz > 10000000)
+	{
+		add_to_mistakes_log(WRONG_SPI3_FREQUENCY_INPUT);
+		transmittion_speed_in_hz = 5000000;
+	}
+
+	// Enable SPI clocking
+	RCC->APB1ENR1 |= RCC_APB1ENR1_SPI3EN;
+
+
+	// SPI SPI_CR1_BR value determination
+	uint32_t baud_rate_devider = 2;
+	uint32_t baud_rate = 0;
+
+	for ( int i = 0; i < 8; ++i )
+	{
+		if ( (SYSCLK_FREQUENCY / baud_rate_devider) < transmittion_speed_in_hz )
+		{
+			break;
+		}
+		++baud_rate;
+		baud_rate_devider *= 2;
+	}
+
+	// SPI setup
+	SPI3->CR1 |= SPI_CR1_SSM | SPI_CR1_SSI | (baud_rate << SPI_CR1_BR_Pos) | SPI_CR1_MSTR; // Equal to SPI3->CR1 |= 0x0314;
+	SPI3->CR2 |= SPI_CR2_FRXTH;
+	SPI3->CR1 |= SPI_CR1_SPE;
+}
+
+/*
+	@brief Transmit and receive single byte with SPI 1
+ */
+uint8_t spi3_write_single_byte(const uint8_t byte_to_be_sent)
+{
+	uint32_t safety_delay_counter = 0;
+
+	// Wait until transmit buffer is empty
+	while((SPI3->SR & SPI_SR_TXE) != SPI_SR_TXE)
+	{
+		++safety_delay_counter;
+		if ( safety_delay_counter > DUMMY_DELAY_VALUE )
+		{
+			add_to_mistakes_log(SPI3_TRANSMISSION_FAIL);
+			return 0;
+		}
+	}
+
+	// Write single byte into the Data Register with single byte access
+	*((volatile uint8_t *)&SPI3->DR) = byte_to_be_sent;
+
+	// Wait until answer will appear in RX buffer
+	while(((SPI3->SR & SPI_SR_RXNE) != SPI_SR_RXNE)){}
+//	while(((SPI->SR & 0x81) == 0x80)){}
+
+	// Return value from RX buffer
+	return SPI3->DR;
+}
+
+
+
+
 
 void basic_uart2_setup(const uint32_t transmission_speed_in_bauds)
 {

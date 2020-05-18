@@ -88,9 +88,29 @@ void gpio_setup(void);
 void timers_setup(void);
 
 /*
+	@brief Sets up ADC
+ */
+void adc_setup(void);
+
+/*
+	@brief Sets up DMA
+ */
+void dma_setup(void);
+
+/*
 	@brief Sets up all desired device peripherals
  */
 void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts);
+
+/*
+	@brief Enable SPI1 transmission with respect to given SPI speed
+ */
+void basic_spi3_setup(uint32_t transmittion_speed_in_hz);
+
+/*
+	@brief Transmit and receive single byte with SPI 3
+ */
+uint8_t spi3_write_single_byte(const uint8_t byte_to_be_sent);
 
 /*
 	@brief Makes program stop for given duration
