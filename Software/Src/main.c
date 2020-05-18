@@ -10,12 +10,18 @@ void dummy_delay(uint32_t delay_time);
 
 uint32_t system_counter = 0;
 
+
+int16_t adc_potentiometers_data[3] = {0, 0, 0};
+int16_t adc_all_sources_data[6] = {0, 0, 0, 0, 0, 0};
+
 int main(void)
 {
 
 	full_device_setup(no, no);
 
-	basic_spi3_setup(5000000);
+	adc_2_setup(adc_potentiometers_data);
+
+//	basic_spi3_setup(5000000);
 
 //	basic_uart2_setup(19200);
 
@@ -26,8 +32,14 @@ int main(void)
 
 		delay_in_milliseconds(200);
 
+
+		// Start new conversion
+		ADC2->ISR |= ADC_ISR_EOS;
+		ADC2->CR |= ADC_CR_ADSTART;
+		while(!(ADC2->ISR & ADC_ISR_EOS)){} // wait until sequence is complete
 		GPIOB->ODR ^= 0x60;
-		spi3_write_single_byte(153);
+
+//		spi3_write_single_byte(153);
 //		uart2_send_byte(54);
 
 

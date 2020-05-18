@@ -90,12 +90,12 @@ void timers_setup(void);
 /*
 	@brief Sets up ADC
  */
-void adc_setup(void);
+void adc_2_setup(int16_t * array_to_write_to);
 
 /*
 	@brief Sets up DMA
  */
-void dma_setup(void);
+void adc_dma_setup(int16_t * array_to_write_to);
 
 /*
 	@brief Sets up all desired device peripherals
@@ -211,6 +211,16 @@ _DECL uint32_t delay_is_finished _INIT(0);
 
 #endif /* VAR_DEFS */
 /******************************************/
+
+enum adc_arrays_indexes
+{
+	adc_pot_1 = 0,
+	adc_pot_2 = 1,
+	adc_pot_3 = 2,
+	adc_acs_cs = 3,
+	adc_ina_cs = 4,
+	adc_drv_so = 5
+};
 
 enum question_answers
 {

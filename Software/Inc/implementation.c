@@ -567,28 +567,67 @@ void timers_setup(void)
 //	TIM17->CNT = 0;			// Clear counter before start
 //	TIM17->CR1 |= TIM_CR1_CEN;
 
-	//*** System timer setup ***//
-	SysTick->LOAD = SYSCLK_FREQUENCY / (8 * SYSTICK_FREQUENCY) - 1;
-	SysTick->VAL = 0;
-	NVIC_EnableIRQ(SysTick_IRQn);
-	SysTick->CTRL |= 0x03; // Start SysTick, enable interrupt
+//	//*** System timer setup ***//
+//	SysTick->LOAD = SYSCLK_FREQUENCY / (8 * SYSTICK_FREQUENCY) - 1;
+//	SysTick->VAL = 0;
+//	NVIC_EnableIRQ(SysTick_IRQn);
+//	SysTick->CTRL |= 0x03; // Start SysTick, enable interrupt
 }
 
 /*
 	@brief Sets up ADC
  */
-void adc_setup()
+void adc_2_setup(int16_t * array_to_write_to)
 {
+	/*
+		Перечень используемых АЦП:
 
-	dma_setup();
+		ADC2_IN7 - потенциометр №1
+		ADC2_IN8 - потенциометр №2
+		ADC2_IN9 - потенциометр №3
+
+		ADC2_IN1 - ACS711 измерение тока
+		ADC2_IN2 - INA240A измерение тока
+
+		ADC2_IN12 - DRV измерение тока
+	 */
 
 	// Set ADC clock
+	RCC->CCIPR |= (2U) << RCC_CCIPR_ADC12SEL_Pos; // SYSCLK as a clock source for ADC1-2.So ADC is working in asynchronous mode.
 
-	// Enable
-
+	// Enable ADC clocking
 	RCC->AHB2ENR |= RCC_AHB2ENR_ADC12EN;
 
+	// Get ADC from deep power down mode
+	ADC2->CR &= ~(ADC_CR_DEEPPWD);
 
+	// Start up internal voltage regulator
+	ADC2->CR |= ADC_CR_ADVREGEN;
+	delay_in_milliseconds(2); // wait until Vreg is on. Должно быть 20us по даташиту, поэтому задержка будет слишком длинной, надо будет исправить со временем.
+
+	// ADC calibration
+	ADC2->CR |= ADC_CR_ADCAL;
+	while(ADC2->CR & ADC_CR_ADCAL){} // Wait until calibration is complite
+
+	// Enable ADC
+	ADC2->ISR |= ADC_ISR_ADRDY; // clear ready flag
+	ADC2->CR |= ADC_CR_ADEN;
+	while(!(ADC2->ISR & ADC_ISR_ADRDY)){} // Wait until adc is ready
+
+	// All channels will be sampled with 12.5 ADC clock cycles
+	ADC2->SMPR1 |=  2 << ADC_SMPR1_SMP9_Pos | 2 << ADC_SMPR1_SMP8_Pos | 2 << ADC_SMPR1_SMP7_Pos | 2 << ADC_SMPR1_SMP2_Pos |  2 << ADC_SMPR1_SMP1_Pos;
+	ADC2->SMPR2 |=  2 << ADC_SMPR2_SMP12_Pos;
+
+	// First setup to read only data from potentiometers
+	ADC2->SQR1 |= 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 3 << ADC_SQR1_L_Pos; // 3 conversions
+
+//	// Second setup, to read data from all 6 sources
+//	ADC2->SQR1 |= 1 << ADC_SQR1_SQ4_Pos | 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 6 << ADC_SQR1_L_Pos; // 6 conversions
+//	ADC2->SQR2 |= 12 << ADC_SQR2_SQ6_Pos | 2 << ADC_SQR2_SQ5_Pos;
+
+	// enable DMA
+	ADC2->CFGR |= ADC_CFGR_DMAEN;
+	adc_dma_setup(array_to_write_to);
 
 }
 
@@ -596,8 +635,24 @@ void adc_setup()
 /*
 	@brief Sets up DMA
  */
-void dma_setup(void)
+void adc_dma_setup(int16_t * array_to_write_to)
 {
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;	// Enable DMA
+
+	// DMA channel 1 setup
+	DMAMUX1_Channel0->CCR |= 36 << DMAMUX_CxCR_DMAREQ_ID_Pos; 	// ADC2 is 36
+	DMA1_Channel1->CPAR = &(ADC2->DR);	// Direct read from TIM15->CNT regester
+	DMA1_Channel1->CMAR = array_to_write_to;	// Memory address to write to. Уже указатель, поэтому нет необходимости получать его адрес
+
+	// for 3 conversions
+	DMA1_Channel1->CNDTR = 3;			// Number of transfers
+	DMA1_Channel1->CCR |= 1 << DMA_CCR_MSIZE_Pos | 1 << DMA_CCR_PSIZE_Pos | DMA_CCR_MINC | DMA_CCR_CIRC;		// 16 bit in and out, circular mode, increment in memmory
+	DMA1_Channel1->CCR |= DMA_CCR_EN;		// enable DMA
+
+//	// for 6 conversions
+//	DMA1_Channel1->CNDTR = 6;			// Number of transfers
+//	DMA1_Channel1->CCR |= 1 << DMA_CCR_MSIZE_Pos | 1 << DMA_CCR_PSIZE_Pos | DMA_CCR_MINC | DMA_CCR_CIRC;		// 16 bit in and out, circular mode, increment in memmory
+//	DMA1_Channel1->CCR |= DMA_CCR_EN;		// enable DMA
 
 }
 
