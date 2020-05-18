@@ -11,8 +11,8 @@ void dummy_delay(uint32_t delay_time);
 uint32_t system_counter = 0;
 
 
-int16_t adc_potentiometers_data[3] = {0, 0, 0};
-int16_t adc_all_sources_data[6] = {0, 0, 0, 0, 0, 0};
+uint16_t adc_potentiometers_data[3] = {0, 0, 0};
+uint16_t adc_all_sources_data[6] = {0, 0, 0, 0, 0, 0};
 
 int main(void)
 {
@@ -34,9 +34,9 @@ int main(void)
 
 
 		// Start new conversion
-		ADC2->ISR |= ADC_ISR_EOS;
 		ADC2->CR |= ADC_CR_ADSTART;
 		while(!(ADC2->ISR & ADC_ISR_EOS)){} // wait until sequence is complete
+		ADC2->ISR |= ADC_ISR_EOS;
 		GPIOB->ODR ^= 0x60;
 
 //		spi3_write_single_byte(153);

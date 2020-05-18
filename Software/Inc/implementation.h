@@ -90,12 +90,12 @@ void timers_setup(void);
 /*
 	@brief Sets up ADC
  */
-void adc_2_setup(int16_t * array_to_write_to);
+void adc_2_setup(uint16_t * array_to_write_to);
 
 /*
 	@brief Sets up DMA
  */
-void adc_dma_setup(int16_t * array_to_write_to);
+void adc_dma_setup(uint16_t * array_to_write_to);
 
 /*
 	@brief Sets up all desired device peripherals

@@ -577,7 +577,7 @@ void timers_setup(void)
 /*
 	@brief Sets up ADC
  */
-void adc_2_setup(int16_t * array_to_write_to)
+void adc_2_setup(uint16_t * array_to_write_to)
 {
 	/*
 		Перечень используемых АЦП:
@@ -619,14 +619,17 @@ void adc_2_setup(int16_t * array_to_write_to)
 	ADC2->SMPR2 |=  2 << ADC_SMPR2_SMP12_Pos;
 
 	// First setup to read only data from potentiometers
-	ADC2->SQR1 |= 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 3 << ADC_SQR1_L_Pos; // 3 conversions
+	ADC2->SQR1 |= 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 2 << ADC_SQR1_L_Pos; // 3 conversions
 
 //	// Second setup, to read data from all 6 sources
-//	ADC2->SQR1 |= 1 << ADC_SQR1_SQ4_Pos | 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 6 << ADC_SQR1_L_Pos; // 6 conversions
+//	ADC2->SQR1 |= 1 << ADC_SQR1_SQ4_Pos | 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 5 << ADC_SQR1_L_Pos; // 6 conversions
 //	ADC2->SQR2 |= 12 << ADC_SQR2_SQ6_Pos | 2 << ADC_SQR2_SQ5_Pos;
 
+//	// slow down
+//	ADC12_COMMON->CCR |= 4 << ADC_CCR_PRESC_Pos;
+
 	// enable DMA
-	ADC2->CFGR |= ADC_CFGR_DMAEN;
+	ADC2->CFGR |= ADC_CFGR_DMAEN | ADC_CFGR_DMACFG;
 	adc_dma_setup(array_to_write_to);
 
 }
@@ -635,18 +638,19 @@ void adc_2_setup(int16_t * array_to_write_to)
 /*
 	@brief Sets up DMA
  */
-void adc_dma_setup(int16_t * array_to_write_to)
+void adc_dma_setup(uint16_t * array_to_write_to)
 {
-	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN;	// Enable DMA
+	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN | RCC_AHB1ENR_DMAMUX1EN;	// Enable DMA
+
 
 	// DMA channel 1 setup
-	DMAMUX1_Channel0->CCR |= 36 << DMAMUX_CxCR_DMAREQ_ID_Pos; 	// ADC2 is 36
-	DMA1_Channel1->CPAR = &(ADC2->DR);	// Direct read from TIM15->CNT regester
-	DMA1_Channel1->CMAR = array_to_write_to;	// Memory address to write to. Уже указатель, поэтому нет необходимости получать его адрес
+	DMA1_Channel1->CPAR = (uint16_t *)&(ADC2->DR);	// Direct read from TIM15->CNT regester
+	DMA1_Channel1->CMAR = (uint16_t *)array_to_write_to;	// Memory address to write to. Уже указатель, поэтому нет необходимости получать его адрес
 
 	// for 3 conversions
 	DMA1_Channel1->CNDTR = 3;			// Number of transfers
 	DMA1_Channel1->CCR |= 1 << DMA_CCR_MSIZE_Pos | 1 << DMA_CCR_PSIZE_Pos | DMA_CCR_MINC | DMA_CCR_CIRC;		// 16 bit in and out, circular mode, increment in memmory
+	DMAMUX1_Channel0->CCR |= (36 << DMAMUX_CxCR_DMAREQ_ID_Pos); 	// ADC2 is 36
 	DMA1_Channel1->CCR |= DMA_CCR_EN;		// enable DMA
 
 //	// for 6 conversions
