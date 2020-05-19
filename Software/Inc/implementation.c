@@ -567,17 +567,17 @@ void timers_setup(void)
 //	TIM17->CNT = 0;			// Clear counter before start
 //	TIM17->CR1 |= TIM_CR1_CEN;
 
-//	//*** System timer setup ***//
-//	SysTick->LOAD = SYSCLK_FREQUENCY / (8 * SYSTICK_FREQUENCY) - 1;
-//	SysTick->VAL = 0;
-//	NVIC_EnableIRQ(SysTick_IRQn);
-//	SysTick->CTRL |= 0x03; // Start SysTick, enable interrupt
+	//*** System timer setup ***//
+	SysTick->LOAD = SYSCLK_FREQUENCY / (8 * SYSTICK_FREQUENCY) - 1;
+	SysTick->VAL = 0;
+	NVIC_EnableIRQ(SysTick_IRQn);
+	SysTick->CTRL |= 0x03; // Start SysTick, enable interrupt
 }
 
 /*
 	@brief Sets up ADC
  */
-void adc_2_setup(uint16_t * array_to_write_to)
+void adc_2_setup(int16_t * array_to_write_to)
 {
 	/*
 		Перечень используемых АЦП:
@@ -618,12 +618,12 @@ void adc_2_setup(uint16_t * array_to_write_to)
 	ADC2->SMPR1 |=  2 << ADC_SMPR1_SMP9_Pos | 2 << ADC_SMPR1_SMP8_Pos | 2 << ADC_SMPR1_SMP7_Pos | 2 << ADC_SMPR1_SMP2_Pos |  2 << ADC_SMPR1_SMP1_Pos;
 	ADC2->SMPR2 |=  2 << ADC_SMPR2_SMP12_Pos;
 
-	// First setup to read only data from potentiometers
-	ADC2->SQR1 |= 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 2 << ADC_SQR1_L_Pos; // 3 conversions
+//	// First setup to read only data from potentiometers
+//	ADC2->SQR1 |= 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 2 << ADC_SQR1_L_Pos; // 3 conversions
 
-//	// Second setup, to read data from all 6 sources
-//	ADC2->SQR1 |= 1 << ADC_SQR1_SQ4_Pos | 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 5 << ADC_SQR1_L_Pos; // 6 conversions
-//	ADC2->SQR2 |= 12 << ADC_SQR2_SQ6_Pos | 2 << ADC_SQR2_SQ5_Pos;
+	// Second setup, to read data from all 6 sources
+	ADC2->SQR1 |= 1 << ADC_SQR1_SQ4_Pos | 9 << ADC_SQR1_SQ3_Pos | 8 << ADC_SQR1_SQ2_Pos | 7 << ADC_SQR1_SQ1_Pos | 5 << ADC_SQR1_L_Pos; // 6 conversions
+	ADC2->SQR2 |= 12 << ADC_SQR2_SQ6_Pos | 2 << ADC_SQR2_SQ5_Pos;
 
 //	// slow down
 //	ADC12_COMMON->CCR |= 4 << ADC_CCR_PRESC_Pos;
@@ -638,17 +638,17 @@ void adc_2_setup(uint16_t * array_to_write_to)
 /*
 	@brief Sets up DMA
  */
-void adc_dma_setup(uint16_t * array_to_write_to)
+void adc_dma_setup(int16_t * array_to_write_to)
 {
 	RCC->AHB1ENR |= RCC_AHB1ENR_DMA1EN | RCC_AHB1ENR_DMAMUX1EN;	// Enable DMA
 
 
 	// DMA channel 1 setup
-	DMA1_Channel1->CPAR = (uint16_t *)&(ADC2->DR);	// Direct read from TIM15->CNT regester
-	DMA1_Channel1->CMAR = (uint16_t *)array_to_write_to;	// Memory address to write to. Уже указатель, поэтому нет необходимости получать его адрес
+	DMA1_Channel1->CPAR = (uint32_t)&(ADC2->DR);	// Direct read from TIM15->CNT regester
+	DMA1_Channel1->CMAR = (uint32_t)array_to_write_to;	// Memory address to write to. Уже указатель, поэтому нет необходимости получать его адрес
 
 	// for 3 conversions
-	DMA1_Channel1->CNDTR = 3;			// Number of transfers
+	DMA1_Channel1->CNDTR = 6;			// Number of transfers
 	DMA1_Channel1->CCR |= 1 << DMA_CCR_MSIZE_Pos | 1 << DMA_CCR_PSIZE_Pos | DMA_CCR_MINC | DMA_CCR_CIRC;		// 16 bit in and out, circular mode, increment in memmory
 	DMAMUX1_Channel0->CCR |= (36 << DMAMUX_CxCR_DMAREQ_ID_Pos); 	// ADC2 is 36
 	DMA1_Channel1->CCR |= DMA_CCR_EN;		// enable DMA
@@ -659,6 +659,50 @@ void adc_dma_setup(uint16_t * array_to_write_to)
 //	DMA1_Channel1->CCR |= DMA_CCR_EN;		// enable DMA
 
 }
+
+void adc_2_manually_get_data(void)
+{
+	// start data acquisition
+	ADC2->CR |= ADC_CR_ADSTART;
+
+	// Wait until acquisition is finished for full sequence
+	while(!(ADC2->ISR & ADC_ISR_EOS)){}
+
+	// Reset end of sequence flag
+	ADC2->ISR |= ADC_ISR_EOS;
+}
+
+void calibrate_current_sencors(int16_t *acs711_average_zero, int16_t * ina240_average_zero, int16_t array_with_adc_values[])
+{
+	int32_t acs_measurements_sum = 0;
+	int32_t ina_measurements_sum = 0;
+
+	// Simple averaging of 1024 continues measurements
+	for (int32_t i = 0; i < 1024; ++i)
+	{
+		adc_2_manually_get_data();
+		acs_measurements_sum += array_with_adc_values[adc_acs_cs];
+		ina_measurements_sum += array_with_adc_values[adc_ina_cs];
+		delay_in_milliseconds(2);
+	}
+
+	*acs711_average_zero = acs_measurements_sum >> 10;
+	*ina240_average_zero = ina_measurements_sum >> 10;
+}
+
+
+/*
+	@brief Calculates currnets from
+ */
+float calculate_current(current_sensor * current_sensor_instance, int16_t adc_measurement)
+{
+	return (float)(adc_measurement - current_sensor_instance->zero_value) * current_sensor_instance->scale_factor;
+}
+
+
+
+
+
 
 /*
 	@brief Enable SPI3 transmission with respect to given SPI speed
@@ -763,8 +807,11 @@ void delay_in_milliseconds(const uint16_t time_in_millisecond){
 }
 
 
-void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts)
+void full_device_setup(uint32_t should_setup_interfaces, uint32_t should_setup_interrupts)
 {
+
+	// enable FPU
+	SCB->CPACR |= 0x3 << 20 ; // full access to the MPU. Idk what it means, but it is hardly needed for MSU to work
 
 	add_to_mistakes_log(system_clock_setup());
 
@@ -782,7 +829,6 @@ void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup
 //		intrfaces_setup();
 //	}
 
-	return;
 }
 
 // Обязательно протестировать!!

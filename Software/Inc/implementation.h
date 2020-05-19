@@ -64,6 +64,12 @@
 #endif /* MISTAKES_LOG_SIZE */
 
 
+// Структуры нужно немного перетасовать, чтобы они могли использоваться как аргументы функций
+typedef struct
+{
+	int16_t zero_value; // ADC LSB
+	float scale_factor;	// v/A
+} current_sensor;
 
 
 
@@ -90,17 +96,17 @@ void timers_setup(void);
 /*
 	@brief Sets up ADC
  */
-void adc_2_setup(uint16_t * array_to_write_to);
+void adc_2_setup(int16_t * array_to_write_to);
 
 /*
 	@brief Sets up DMA
  */
-void adc_dma_setup(uint16_t * array_to_write_to);
+void adc_dma_setup(int16_t * array_to_write_to);
 
 /*
 	@brief Sets up all desired device peripherals
  */
-void full_device_setup(uint32_t should_inclued_interfaces, uint32_t should_setup_interrupts);
+void full_device_setup(uint32_t should_setup_interfaces, uint32_t should_setup_interrupts);
 
 /*
 	@brief Enable SPI1 transmission with respect to given SPI speed
@@ -144,6 +150,34 @@ uint32_t pll_setup(uint32_t is_HSE_clock_source);
  */
 void gpio_setup(void);
 
+/*
+	@brief Start ADC cycle and waits until its fully done
+ */
+void adc_2_manually_get_data(void);
+
+/*
+	@brief вычисляет нулевые значения для обоих датчиков тока
+	В идеале надо сделать так, чтобы эта функция смогла писать калибровочные коэффициенты в EEPROM, из которого они потом будут читаться
+ */
+void calibrate_current_sencors(int16_t *acs711_average_zero, int16_t * ina240_average_zero, int16_t array_with_adc_values[]);
+
+/*
+	@brief Calculates currnets from
+ */
+float calculate_current(current_sensor * current_sensor_instance, int16_t adc_measurement);
+
+// ****** In progress section ****** //
+
+
+
+/*
+	@brief Че-то связанное с I2C
+ */
+
+
+
+// ****** end of in progress section ****** //
+
 
 /*
 	@brief	Enables UART 1 with a given baud rate with TX and RX enable and default setting in everything else
@@ -178,6 +212,8 @@ typedef struct{
 	uint32_t mistake_time_in_milliseconds;
 	uint32_t mistake_time_in_seconds;
 } mistake;
+
+
 
 // *** Global variables declaration *** //
 /*

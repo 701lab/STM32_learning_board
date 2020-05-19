@@ -5586,9 +5586,9 @@ DIN A3, landscape with extra doc field</description>
 <instance part="GND34" gate="1" x="100.33" y="7.62" smashed="yes" rot="MR0" grouprefs="EEPROM">
 <attribute name="VALUE" x="102.87" y="5.08" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="U6" gate="G$1" x="153.67" y="66.04" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="143.51" y="80.01" size="1.778" layer="95"/>
-<attribute name="VALUE" x="143.51" y="50.8" size="1.778" layer="96"/>
+<instance part="U6" gate="G$1" x="153.67" y="63.5" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="143.51" y="77.47" size="1.778" layer="95"/>
+<attribute name="VALUE" x="143.51" y="48.26" size="1.778" layer="96"/>
 </instance>
 <instance part="C3" gate="G$1" x="38.1" y="193.04" smashed="yes" rot="R180" grouprefs="INPUT_POWER">
 <attribute name="NAME" x="39.624" y="195.961" size="1.778" layer="95"/>
@@ -5598,26 +5598,26 @@ DIN A3, landscape with extra doc field</description>
 <attribute name="NAME" x="87.884" y="178.181" size="1.778" layer="95"/>
 <attribute name="VALUE" x="87.884" y="173.101" size="1.778" layer="96"/>
 </instance>
-<instance part="C23" gate="G$1" x="189.23" y="72.39" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="190.754" y="72.771" size="1.778" layer="95"/>
-<attribute name="VALUE" x="190.754" y="67.691" size="1.778" layer="96"/>
+<instance part="C23" gate="G$1" x="189.23" y="69.85" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="190.754" y="70.231" size="1.778" layer="95"/>
+<attribute name="VALUE" x="190.754" y="65.151" size="1.778" layer="96"/>
 </instance>
-<instance part="+3V19" gate="G$1" x="189.23" y="86.36" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="190.5" y="85.09" size="1.778" layer="96"/>
+<instance part="+3V19" gate="G$1" x="189.23" y="83.82" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="190.5" y="82.55" size="1.778" layer="96"/>
 </instance>
-<instance part="GND35" gate="1" x="189.23" y="50.8" smashed="yes" rot="MR0" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="191.77" y="48.26" size="1.778" layer="96" rot="MR0"/>
+<instance part="GND35" gate="1" x="189.23" y="48.26" smashed="yes" rot="MR0" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="191.77" y="45.72" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="J6" gate="G$1" x="130.81" y="68.58" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="129.54" y="72.39" size="1.778" layer="96"/>
-<attribute name="NAME" x="129.54" y="58.42" size="1.778" layer="95"/>
+<instance part="J6" gate="G$1" x="128.27" y="66.04" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="127" y="69.85" size="1.778" layer="96"/>
+<attribute name="NAME" x="127" y="55.88" size="1.778" layer="95"/>
 </instance>
 <instance part="+3V20" gate="G$1" x="10.16" y="114.3" smashed="yes" grouprefs="MCU_POWER">
 <attribute name="VALUE" x="11.43" y="113.03" size="1.778" layer="96"/>
 </instance>
-<instance part="R13" gate="G$1" x="200.66" y="72.39" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="201.93" y="75.1586" size="1.778" layer="95"/>
-<attribute name="VALUE" x="201.93" y="67.818" size="1.778" layer="96"/>
+<instance part="R13" gate="G$1" x="200.66" y="69.85" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="201.93" y="72.6186" size="1.778" layer="95"/>
+<attribute name="VALUE" x="201.93" y="65.278" size="1.778" layer="96"/>
 </instance>
 <instance part="J1" gate="G$1" x="12.7" y="229.87" smashed="yes" rot="MR180" grouprefs="INPUT_POWER">
 <attribute name="VALUE" x="11.43" y="226.06" size="1.778" layer="96" rot="MR180"/>
@@ -5665,30 +5665,30 @@ DIN A3, landscape with extra doc field</description>
 <instance part="+1.8V1" gate="A" x="106.68" y="161.29" smashed="yes" grouprefs="INPUT_POWER">
 <attribute name="VALUE" x="107.95" y="160.02" size="1.778" layer="96"/>
 </instance>
-<instance part="U7" gate="A" x="267.97" y="72.39" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="255.27" y="80.264" size="2.0828" layer="95" ratio="6" rot="SR0"/>
-<attribute name="VALUE" x="255.27" y="59.69" size="2.0828" layer="96" ratio="6" rot="SR0"/>
+<instance part="U7" gate="A" x="267.97" y="69.85" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="255.27" y="77.724" size="2.0828" layer="95" ratio="6" rot="SR0"/>
+<attribute name="VALUE" x="255.27" y="57.15" size="2.0828" layer="96" ratio="6" rot="SR0"/>
 </instance>
-<instance part="J7" gate="G$1" x="222.25" y="73.66" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="220.98" y="63.5" size="1.778" layer="96"/>
-<attribute name="NAME" x="220.98" y="77.47" size="1.778" layer="95"/>
+<instance part="J7" gate="G$1" x="222.25" y="71.12" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="220.98" y="60.96" size="1.778" layer="96"/>
+<attribute name="NAME" x="220.98" y="74.93" size="1.778" layer="95"/>
 </instance>
-<instance part="R14" gate="A" x="237.49" y="71.12" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="238.76" y="73.8886" size="1.778" layer="95"/>
-<attribute name="VALUE" x="238.76" y="67.818" size="1.778" layer="96"/>
+<instance part="R14" gate="A" x="237.49" y="68.58" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="238.76" y="71.3486" size="1.778" layer="95"/>
+<attribute name="VALUE" x="238.76" y="65.278" size="1.778" layer="96"/>
 </instance>
-<instance part="GND38" gate="1" x="247.65" y="48.26" smashed="yes" rot="MR0" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="250.19" y="45.72" size="1.778" layer="96" rot="MR0"/>
+<instance part="GND38" gate="1" x="247.65" y="45.72" smashed="yes" rot="MR0" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="250.19" y="43.18" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="C24" gate="G$1" x="265.43" y="53.34" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="268.224" y="54.991" size="1.778" layer="95"/>
-<attribute name="VALUE" x="268.224" y="49.911" size="1.778" layer="96"/>
+<instance part="C24" gate="G$1" x="265.43" y="50.8" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="268.224" y="52.451" size="1.778" layer="95"/>
+<attribute name="VALUE" x="268.224" y="47.371" size="1.778" layer="96"/>
 </instance>
-<instance part="+3V24" gate="G$1" x="313.69" y="82.55" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="314.96" y="81.28" size="1.778" layer="96"/>
+<instance part="+3V24" gate="G$1" x="313.69" y="80.01" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="314.96" y="78.74" size="1.778" layer="96"/>
 </instance>
-<instance part="+1.8V2" gate="A" x="303.53" y="82.55" smashed="yes" grouprefs="CURRENT_SENSE">
-<attribute name="VALUE" x="304.8" y="81.28" size="1.778" layer="96"/>
+<instance part="+1.8V2" gate="A" x="303.53" y="80.01" smashed="yes" grouprefs="CURRENT_SENSE">
+<attribute name="VALUE" x="304.8" y="78.74" size="1.778" layer="96"/>
 </instance>
 <instance part="+3V14" gate="G$1" x="107.95" y="97.79" smashed="yes" grouprefs="MCU_POWER">
 <attribute name="VALUE" x="109.22" y="96.52" size="1.778" layer="96"/>
@@ -5708,11 +5708,11 @@ DIN A3, landscape with extra doc field</description>
 <instance part="TP1" gate="G$1" x="111.76" y="248.92" smashed="yes" grouprefs="INPUT_POWER">
 <attribute name="NAME" x="114.3" y="248.92" size="1.27" layer="95"/>
 </instance>
-<instance part="TP6" gate="G$1" x="288.29" y="80.01" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="287.02" y="82.55" size="1.27" layer="95"/>
+<instance part="TP6" gate="G$1" x="288.29" y="77.47" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="287.02" y="80.01" size="1.27" layer="95"/>
 </instance>
-<instance part="TP5" gate="G$1" x="173.99" y="71.12" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
-<attribute name="NAME" x="172.72" y="73.66" size="1.27" layer="95"/>
+<instance part="TP5" gate="G$1" x="173.99" y="68.58" smashed="yes" rot="R90" grouprefs="CURRENT_SENSE">
+<attribute name="NAME" x="172.72" y="71.12" size="1.27" layer="95"/>
 </instance>
 <instance part="FRAME2" gate="G$1" x="0" y="1.27" smashed="yes"/>
 <instance part="FRAME2" gate="G$2" x="287.02" y="1.27" smashed="yes">
@@ -6025,11 +6025,11 @@ DIN A3, landscape with extra doc field</description>
 <segment>
 <pinref part="GND35" gate="1" pin="GND"/>
 <pinref part="U6" gate="G$1" pin="GND"/>
-<wire x1="189.23" y1="53.34" x2="189.23" y2="55.88" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="189.23" y1="55.88" x2="168.91" y2="55.88" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="189.23" y1="50.8" x2="189.23" y2="53.34" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="189.23" y1="53.34" x2="168.91" y2="53.34" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="C23" gate="G$1" pin="2"/>
-<wire x1="189.23" y1="67.31" x2="189.23" y2="55.88" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="189.23" y="55.88" grouprefs="CURRENT_SENSE"/>
+<wire x1="189.23" y1="64.77" x2="189.23" y2="53.34" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="189.23" y="53.34" grouprefs="CURRENT_SENSE"/>
 </segment>
 <segment>
 <pinref part="GND36" gate="1" pin="GND"/>
@@ -6062,16 +6062,16 @@ DIN A3, landscape with extra doc field</description>
 <segment>
 <pinref part="GND38" gate="1" pin="GND"/>
 <pinref part="U7" gate="A" pin="GND"/>
-<wire x1="247.65" y1="50.8" x2="247.65" y2="53.34" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="247.65" y1="53.34" x2="247.65" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="247.65" y1="67.31" x2="250.19" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="247.65" y1="48.26" x2="247.65" y2="50.8" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="247.65" y1="50.8" x2="247.65" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="247.65" y1="64.77" x2="250.19" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="C24" gate="G$1" pin="1"/>
-<wire x1="262.89" y1="53.34" x2="247.65" y2="53.34" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="247.65" y="53.34" grouprefs="CURRENT_SENSE"/>
+<wire x1="262.89" y1="50.8" x2="247.65" y2="50.8" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="247.65" y="50.8" grouprefs="CURRENT_SENSE"/>
 <pinref part="U7" gate="A" pin="NC"/>
-<wire x1="250.19" y1="74.93" x2="247.65" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="247.65" y1="74.93" x2="247.65" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="247.65" y="67.31" grouprefs="CURRENT_SENSE"/>
+<wire x1="250.19" y1="72.39" x2="247.65" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="247.65" y1="72.39" x2="247.65" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="247.65" y="64.77" grouprefs="CURRENT_SENSE"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -6241,17 +6241,17 @@ DIN A3, landscape with extra doc field</description>
 </segment>
 <segment>
 <pinref part="U6" gate="G$1" pin="VCC"/>
-<wire x1="168.91" y1="76.2" x2="189.23" y2="76.2" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="168.91" y1="73.66" x2="189.23" y2="73.66" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="C23" gate="G$1" pin="1"/>
-<wire x1="189.23" y1="76.2" x2="189.23" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="189.23" y1="76.2" x2="189.23" y2="78.74" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="189.23" y="76.2" grouprefs="CURRENT_SENSE"/>
+<wire x1="189.23" y1="73.66" x2="189.23" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="189.23" y1="73.66" x2="189.23" y2="76.2" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="189.23" y="73.66" grouprefs="CURRENT_SENSE"/>
 <pinref part="+3V19" gate="G$1" pin="+3V3"/>
 <pinref part="R13" gate="G$1" pin="2"/>
-<wire x1="189.23" y1="78.74" x2="189.23" y2="83.82" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="200.66" y1="77.47" x2="200.66" y2="78.74" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="200.66" y1="78.74" x2="189.23" y2="78.74" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="189.23" y="78.74" grouprefs="CURRENT_SENSE"/>
+<wire x1="189.23" y1="76.2" x2="189.23" y2="81.28" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="200.66" y1="74.93" x2="200.66" y2="76.2" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="200.66" y1="76.2" x2="189.23" y2="76.2" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="189.23" y="76.2" grouprefs="CURRENT_SENSE"/>
 </segment>
 <segment>
 <pinref part="+3V20" gate="G$1" pin="+3V3"/>
@@ -6284,12 +6284,12 @@ DIN A3, landscape with extra doc field</description>
 </segment>
 <segment>
 <pinref part="C24" gate="G$1" pin="2"/>
-<wire x1="270.51" y1="53.34" x2="313.69" y2="53.34" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="313.69" y1="53.34" x2="313.69" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="270.51" y1="50.8" x2="313.69" y2="50.8" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="313.69" y1="50.8" x2="313.69" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="U7" gate="A" pin="VS"/>
-<wire x1="313.69" y1="67.31" x2="285.75" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="313.69" y1="67.31" x2="313.69" y2="80.01" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="313.69" y="67.31" grouprefs="CURRENT_SENSE"/>
+<wire x1="313.69" y1="64.77" x2="285.75" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="313.69" y1="64.77" x2="313.69" y2="77.47" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="313.69" y="64.77" grouprefs="CURRENT_SENSE"/>
 <pinref part="+3V24" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
@@ -6844,19 +6844,19 @@ DIN A3, landscape with extra doc field</description>
 <segment>
 <pinref part="R13" gate="G$1" pin="1"/>
 <pinref part="U6" gate="G$1" pin="!FAULT"/>
-<wire x1="168.91" y1="60.96" x2="200.66" y2="60.96" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="200.66" y1="67.31" x2="200.66" y2="60.96" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="168.91" y1="58.42" x2="200.66" y2="58.42" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="200.66" y1="64.77" x2="200.66" y2="58.42" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 </segment>
 </net>
 <net name="ACS_ADC" class="0">
 <segment>
 <pinref part="U6" gate="G$1" pin="VIOUT"/>
-<wire x1="168.91" y1="66.04" x2="173.99" y2="66.04" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<label x="176.53" y="66.04" size="1.524" layer="95" rot="R180" align="center-right" grouprefs="CURRENT_SENSE"/>
+<wire x1="168.91" y1="63.5" x2="173.99" y2="63.5" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<label x="176.53" y="63.5" size="1.524" layer="95" rot="R180" align="center-right" grouprefs="CURRENT_SENSE"/>
 <pinref part="TP5" gate="G$1" pin="P$1"/>
-<wire x1="173.99" y1="66.04" x2="176.53" y2="66.04" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="173.99" y1="68.58" x2="173.99" y2="66.04" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="173.99" y="66.04" grouprefs="CURRENT_SENSE"/>
+<wire x1="173.99" y1="63.5" x2="176.53" y2="63.5" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="173.99" y1="66.04" x2="173.99" y2="63.5" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="173.99" y="63.5" grouprefs="CURRENT_SENSE"/>
 </segment>
 <segment>
 <pinref part="U3" gate="A" pin="PA0"/>
@@ -6919,54 +6919,54 @@ DIN A3, landscape with extra doc field</description>
 </segment>
 <segment>
 <pinref part="U7" gate="A" pin="REF1"/>
-<wire x1="285.75" y1="72.39" x2="303.53" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="285.75" y1="69.85" x2="303.53" y2="69.85" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="U7" gate="A" pin="REF2"/>
-<wire x1="303.53" y1="72.39" x2="303.53" y2="69.85" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="303.53" y1="69.85" x2="285.75" y2="69.85" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="303.53" y1="72.39" x2="303.53" y2="80.01" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="303.53" y="72.39" grouprefs="CURRENT_SENSE"/>
+<wire x1="303.53" y1="69.85" x2="303.53" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="303.53" y1="67.31" x2="285.75" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="303.53" y1="69.85" x2="303.53" y2="77.47" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="303.53" y="69.85" grouprefs="CURRENT_SENSE"/>
 <pinref part="+1.8V2" gate="A" pin="+1.8V"/>
 </segment>
 </net>
 <net name="N$25" class="0">
 <segment>
 <pinref part="J7" gate="G$1" pin="1"/>
-<wire x1="227.33" y1="73.66" x2="233.68" y2="73.66" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="233.68" y1="73.66" x2="233.68" y2="77.47" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="233.68" y1="77.47" x2="237.49" y2="77.47" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="227.33" y1="71.12" x2="233.68" y2="71.12" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="233.68" y1="71.12" x2="233.68" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="233.68" y1="74.93" x2="237.49" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="R14" gate="A" pin="2"/>
-<wire x1="237.49" y1="77.47" x2="237.49" y2="76.2" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="237.49" y1="74.93" x2="237.49" y2="73.66" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="U7" gate="A" pin="IN+"/>
-<wire x1="250.19" y1="72.39" x2="245.11" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="245.11" y1="72.39" x2="245.11" y2="77.47" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="245.11" y1="77.47" x2="237.49" y2="77.47" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="237.49" y="77.47" grouprefs="CURRENT_SENSE"/>
+<wire x1="250.19" y1="69.85" x2="245.11" y2="69.85" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="245.11" y1="69.85" x2="245.11" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="245.11" y1="74.93" x2="237.49" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="237.49" y="74.93" grouprefs="CURRENT_SENSE"/>
 </segment>
 </net>
 <net name="N$28" class="0">
 <segment>
 <pinref part="R14" gate="A" pin="1"/>
-<wire x1="237.49" y1="66.04" x2="237.49" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="237.49" y1="64.77" x2="233.68" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="237.49" y1="63.5" x2="237.49" y2="62.23" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="237.49" y1="62.23" x2="233.68" y2="62.23" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="J7" gate="G$1" pin="2"/>
-<wire x1="233.68" y1="64.77" x2="233.68" y2="68.58" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="233.68" y1="68.58" x2="227.33" y2="68.58" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="233.68" y1="62.23" x2="233.68" y2="66.04" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="233.68" y1="66.04" x2="227.33" y2="66.04" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
 <pinref part="U7" gate="A" pin="IN-"/>
-<wire x1="250.19" y1="69.85" x2="245.11" y2="69.85" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="245.11" y1="69.85" x2="245.11" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="245.11" y1="64.77" x2="237.49" y2="64.77" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="237.49" y="64.77" grouprefs="CURRENT_SENSE"/>
+<wire x1="250.19" y1="67.31" x2="245.11" y2="67.31" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="245.11" y1="67.31" x2="245.11" y2="62.23" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="245.11" y1="62.23" x2="237.49" y2="62.23" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="237.49" y="62.23" grouprefs="CURRENT_SENSE"/>
 </segment>
 </net>
 <net name="INA_ADC" class="0">
 <segment>
 <pinref part="U7" gate="A" pin="OUT"/>
-<wire x1="285.75" y1="74.93" x2="288.29" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<label x="290.83" y="74.93" size="1.778" layer="95" grouprefs="CURRENT_SENSE"/>
+<wire x1="285.75" y1="72.39" x2="288.29" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<label x="290.83" y="72.39" size="1.778" layer="95" grouprefs="CURRENT_SENSE"/>
 <pinref part="TP6" gate="G$1" pin="P$1"/>
-<wire x1="288.29" y1="74.93" x2="290.83" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<wire x1="288.29" y1="77.47" x2="288.29" y2="74.93" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
-<junction x="288.29" y="74.93" grouprefs="CURRENT_SENSE"/>
+<wire x1="288.29" y1="72.39" x2="290.83" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<wire x1="288.29" y1="74.93" x2="288.29" y2="72.39" width="0.1524" layer="91" grouprefs="CURRENT_SENSE"/>
+<junction x="288.29" y="72.39" grouprefs="CURRENT_SENSE"/>
 </segment>
 <segment>
 <pinref part="U3" gate="A" pin="PA1"/>
@@ -7051,14 +7051,14 @@ DIN A3, landscape with extra doc field</description>
 <segment>
 <pinref part="U6" gate="G$1" pin="IP+"/>
 <pinref part="J6" gate="G$1" pin="1"/>
-<wire x1="138.43" y1="68.58" x2="135.89" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="138.43" y1="66.04" x2="133.35" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="ACS_IP-" class="0">
 <segment>
 <pinref part="U6" gate="G$1" pin="IP–"/>
 <pinref part="J6" gate="G$1" pin="2"/>
-<wire x1="138.43" y1="63.5" x2="135.89" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="138.43" y1="60.96" x2="133.35" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
