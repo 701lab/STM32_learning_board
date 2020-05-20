@@ -539,7 +539,7 @@ void timers_setup(void)
 
 	//*** Timer3 encoder setup ***//
 	TIM3->ARR = 65535; 		// 2^16-1 - maximum value for this timer. No prescaler, so timer is working with max speed
-	TIM3->CCER |= 0x02;		// Should be uncommented if encoder direction reversal is needed
+//	TIM3->CCER |= 0x02;		// Should be uncommented if encoder direction reversal is needed
 	TIM3->SMCR |= 0x03;		// Encoder mode setup
 	TIM3->CNT = 0;			// Clear counter before start
 	TIM3->CR1 |= TIM_CR1_CEN;
@@ -700,7 +700,15 @@ float calculate_current(current_sensor * current_sensor_instance, int16_t adc_me
 }
 
 
+void drv8701_nsleep_low()
+{
+	GPIOB->BSRR |= GPIO_BSRR_BR15;
+}
 
+void drv8701_nsleep_high()
+{
+	GPIOB->BSRR |= GPIO_BSRR_BS15;
+}
 
 
 
@@ -769,7 +777,19 @@ uint8_t spi3_write_single_byte(const uint8_t byte_to_be_sent)
 	return SPI3->DR;
 }
 
+void I2C_2_setup(void)
+{
+	// Clock source setup is not needed
+	RCC->CCIPR |= 0 << RCC_CCIPR_I2C2SEL_Pos; // PCLK is used as a clock source
 
+	// Enable clocking
+	RCC->APB1ENR1 |= RCC_APB1ENR1_I2C2EN;
+
+	// Enable I2C
+	I2C2->CR1 |= I2C_CR1_PE;
+
+
+}
 
 
 
@@ -831,7 +851,6 @@ void full_device_setup(uint32_t should_setup_interfaces, uint32_t should_setup_i
 
 }
 
-// Обязательно протестировать!!
 /*
 	@brief TIM14 overflow interrupt handler - counts minutes from enable of mistakes log.
 
@@ -845,4 +864,87 @@ void TIM1_BRK_TIM15_IRQHandler()
 
 	// Place to put code to write into EEPROM (for development of future devices)
 }
+
+
+//uint32_t set_motor_pwm(const int32_t required_duty_cycle_coefficient)
+//{
+//	uint32_t max_duty_cycle = PWM_PRECISION;
+//
+//	if (required_duty_cycle_coefficient < 0)
+//	{
+//		if(required_duty_cycle_coefficient < - max_duty_cycle) 	// PWM task negative but higher than maximum -> set maximum PWM in reverse direction
+//		{
+//			TIM8->CCR4 = max_duty_cycle;
+//			TIM8->CCR3 = 0;
+//
+//			return MOTOR_PWM_TASK_LOWER_THAN_MINIMUM;
+//		}
+//		else {						// PWM task is negative and less than maximum -> set task PWM in reverse direction
+//			TIM8->CCR4 = max_duty_cycle;
+//			TIM8->CCR3 = max_duty_cycle + required_duty_cycle_coefficient;
+//		}
+//	}
+//	else
+//	{ /* required_duty_cycle_coefficient >= 0 */
+//		if(required_duty_cycle_coefficient > max_duty_cycle)	// PWM task is positive but higher than maximum -> set maximum PWM in forward direction
+//		{
+//			TIM8->CCR3 = max_duty_cycle;
+//			TIM8->CCR4 = 0;
+//
+//			return MOTOR_PWM_TASK_HIGHER_THAN_MAXIMUM;
+//		}
+//		else						// PWM task is positive and less than maximum -> set maximum PWM in forward direction
+//		{
+//			TIM8->CCR3 = max_duty_cycle;
+//			TIM8->CCR4 = max_duty_cycle - required_duty_cycle_coefficient;
+//		}
+//	} /* required_duty_cycle_coefficient >= 0 */
+//
+//	return 0;
+//}
+
+
+uint32_t set_motor_pwm(const int32_t required_duty_cycle_coefficient)
+{
+	uint32_t max_duty_cycle = PWM_PRECISION;
+
+	if (required_duty_cycle_coefficient < 0)
+	{
+		if(required_duty_cycle_coefficient < - max_duty_cycle) 	// PWM task negative but higher than maximum -> set maximum PWM in reverse direction
+		{
+			TIM8->CCR3 = max_duty_cycle;
+			TIM8->CCR4 = 0;
+
+			return MOTOR_PWM_TASK_LOWER_THAN_MINIMUM;
+		}
+		else {						// PWM task is negative and less than maximum -> set task PWM in reverse direction
+			TIM8->CCR3 = max_duty_cycle;
+			TIM8->CCR4 = max_duty_cycle + required_duty_cycle_coefficient;
+		}
+	}
+	else
+	{ /* required_duty_cycle_coefficient >= 0 */
+		if(required_duty_cycle_coefficient > max_duty_cycle)	// PWM task is positive but higher than maximum -> set maximum PWM in forward direction
+		{
+			TIM8->CCR4 = max_duty_cycle;
+			TIM8->CCR3 = 0;
+
+			return MOTOR_PWM_TASK_HIGHER_THAN_MAXIMUM;
+		}
+		else						// PWM task is positive and less than maximum -> set maximum PWM in forward direction
+		{
+			TIM8->CCR4 = max_duty_cycle;
+			TIM8->CCR3 = max_duty_cycle - required_duty_cycle_coefficient;
+		}
+	} /* required_duty_cycle_coefficient >= 0 */
+
+	return 0;
+}
+
+
+int16_t get_motor_encoder_value(void)
+{
+	return TIM3->CNT;
+}
+
 

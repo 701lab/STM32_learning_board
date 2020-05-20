@@ -31,7 +31,7 @@
 	Determines control system outer loop frequency
  */
 #ifndef SYSTICK_FREQUENCY
-	#define SYSTICK_FREQUENCY				40		// Hz
+	#define SYSTICK_FREQUENCY				400		// Hz
 #endif /* SYSTICK_FREQUENCY */
 
 
@@ -128,6 +128,16 @@ void delay_in_milliseconds(const uint16_t time_in_millisecond);
  */
 void delay_in_milliseconds(const uint16_t time_in_millisecond);
 
+/*
+	@brief Sets desired motor PWM width
+ */
+uint32_t set_motor_pwm(const int32_t required_duty_cycle_coefficient);
+
+/*
+	@brief Returns motor encoder values
+ */
+int16_t get_motor_encoder_value(void);
+
 // ******************************** //
 // ****** Non-User functions ****** //
 // ******************************** //
@@ -168,7 +178,7 @@ float calculate_current(current_sensor * current_sensor_instance, int16_t adc_me
 
 // ****** In progress section ****** //
 
-
+void I2C_2_setup(void);
 
 /*
 	@brief Че-то связанное с I2C
@@ -188,6 +198,17 @@ void basic_uart2_setup(const uint32_t transmission_speed_in_bauds);
 	 @brief	Sends given byte when TX buffer is empty
  */
 void uart2_send_byte(const uint8_t message_byte);
+
+
+// *** Motor driver functions *** //
+
+void drv8701_nsleep_low(); // PB15 Low
+void drv8701_nsleep_high(); // PB15 high
+
+
+
+
+
 
 // **************************************** //
 // ****** Non user-adjustable defines ***** //
