@@ -26,7 +26,7 @@ current_sensor acs711;
 int main(void)
 {
 	ina240.zero_value = 2394;
-	ina240.scale_factor = 0.0036621f; // A/(LSB) = (Vref / 2^(ADC precision in bits)) / (amplifier V/V * current shunt resistance)
+	ina240.scale_factor = 0.00362585f; //0.0036621f; // A/(LSB) = (Vref / 2^(ADC precision in bits)) / (amplifier V/V * current shunt resistance)
 
 	acs711.zero_value = 2159;
 	acs711.scale_factor = 0.0086677f;
